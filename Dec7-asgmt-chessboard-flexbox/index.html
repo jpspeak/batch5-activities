@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    .chessboard-container {
+      height: 100%;
+      border: 1px solid gray;
+      padding: 10px;
+
+      border-radius: 10px;
+      box-shadow: 10px 10px 10px gray;
+    }
+    .chessboard {
+      border: 1px solid gray;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    .chessboard div {
+      flex-grow: 1;
+      display: flex;
+    }
+    .chessboard div div {
+      flex-grow: 1;
+    }
+
+    .chessboard div:nth-child(odd) div:nth-child(even) {
+      background: black;
+    }
+    .chessboard div:nth-child(even) div:nth-child(odd) {
+      background: black;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    .main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .square {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .square:after {
+      content: "";
+      display: block;
+      padding-bottom: 100%;
+    }
+    .content {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+    }
+    * {
+      box-sizing: border-box;
+    }
+  </style>
+  <body>
+    <div class="main">
+      <div class="square">
+        <div class="content">
+          <div class="chessboard-container">
+            <div class="chessboard">
+              <div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+              <div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

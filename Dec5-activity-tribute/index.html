@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bruce Lee Tribute</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Karla:wght@200&family=Source+Sans+Pro:wght@700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Padauk", sans-serif;
+        background-color: #141518;
+      }
+      nav {
+        height: 150px;
+        width: 100%;
+        background-color: black;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        color: #ffd404;
+      }
+      nav h1 {
+        font-size: 80px;
+        font-family: "Nanum Brush Script", cursive;
+      }
+      main .image-container {
+        width: 100%;
+        background-color: #edc41c;
+      }
+      main .image-container img {
+        width: 100%;
+        max-width: 500px;
+      }
+      .quote-icon {
+        width: 72px !important;
+      }
+      #quote {
+        font-family: "Karla", sans-serif;
+        font-size: 36px;
+        line-height: 1.2;
+      }
+      #tribute-info-container {
+        padding: 16px;
+        border: 2px solid #212529;
+        border-radius: 10px;
+      }
+      p {
+        font-size: 20px;
+        line-height: 1.8;
+      }
+      footer {
+        height: 50px;
+        background-color: black;
+        color: #ffd404;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="container">
+        <h1 id="title" class="font-weight-bold">Bruce Lee</h1>
+        <h5>1940 - 1973</h5>
+      </div>
+    </nav>
+    <main>
+      <div class="image-container py-2">
+        <div class="container h-100">
+          <div class="row">
+            <div class="col-md">
+              <img src="bg-brucelee.jpg" alt="bruce lee" />
+              <figcaption id="img-caption" class="mb-4 text-center">
+                Lee Jun-fan, american actor, director, martial artist and
+                philosopher.
+              </figcaption>
+            </div>
+            <div class="col-md d-flex flex-column justify-content-center">
+              <div>
+                <img src="quote-left.png" alt="quote" class="quote-icon" />
+                <p id="quote" class="text-center mx-4">
+                  Knowing is not enough,<br />
+                  <strong>we must apply</strong>.<br />
+                  Willing is not enough,<br />
+                  <strong>we must do</strong>.<br />
+                  - <small>Bruce Lee</small>
+                </p>
+              </div>
+              <div id="tribute-info-container" class="mt-5">
+                <p id="tribute-info" class="mt-2">
+                  Chinese name <strong>Li Jun Fan</strong>, (born November 27,
+                  1940, San Francisco, California, U.S.—died July 20, 1973, Hong
+                  Kong), American-born film actor who was renowned for his
+                  martial arts prowess and who helped popularize martial arts
+                  movies in the 1970s.
+                </p>
+                <a
+                  href="https://www.britannica.com/biography/Bruce-Lee"
+                  target="_blank"
+                  class="d-block text-right text-dark font-weight-bold"
+                  >Read more</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container text-white">
+        <div class="row py-5">
+          <div class="col-md-4">
+            <div
+              style="padding-bottom: 150%; border: 1px solid white"
+              class="position-relative mb-4"
+            >
+              <img
+                src="action.jpg"
+                alt="action"
+                height="100%"
+                width="100%"
+                style="object-fit: cover; position: absolute"
+              />
+            </div>
+          </div>
+          <div class="col-md-8">
+            <h2 class="mb-3">Action Hero</h2>
+            <p>
+              Lee gained a measure of celebrity with his role in the television
+              series The Green Hornet, which aired in 26 episodes from 1966 to
+              '67. In the show, which was based on a 1930s radio program, the
+              wiry Lee displayed his acrobatic and theatrical fighting style as
+              the Hornet's sidekick, Kato. He went on to make guest appearances
+              in such TV shows as Ironside and Longstreet, while a notable film
+              role came in 1969's Marlowe, starring James Garner as the notable
+              detective created by Raymond Chandler. (The screenwriter for the
+              film, Stirling Silliphant, was one of Lee's martial arts students.
+              Other Lee students included James Coburn, Steve McQueen and Garner
+              himself.)
+            </p>
+          </div>
+        </div>
+        <div class="row py-5">
+          <div class="col-md-4">
+            <div
+              style="padding-bottom: 150%; border: 1px solid white"
+              class="position-relative mb-4"
+            >
+              <img
+                src="philosophy.jpg"
+                alt="action"
+                height="100%"
+                width="100%"
+                style="object-fit: cover; position: absolute"
+              />
+            </div>
+          </div>
+          <div class="col-md-8">
+            <h2 class="mb-3">Philosophy</h2>
+            <p>
+              While best known as a martial artist, Lee also studied drama and
+              Asian and Western philosophy starting while a student at the
+              University of Washington. He was well-read and had an extensive
+              library dominated by martial arts subjects and philosophical
+              texts. His own books on martial arts and fighting philosophy are
+              known for their philosophical assertions, both inside and outside
+              of martial arts circles. His eclectic philosophy often mirrored
+              his fighting beliefs, though he was quick to claim that his
+              martial arts were solely a metaphor for such teachings. He
+              believed that any knowledge ultimately led to self-knowledge, and
+              said that his chosen method of self-expression was martial arts.
+              His influences include Taoism, Jiddu Krishnamurti, and Buddhism.
+              Lee's philosophy was very much in opposition to the conservative
+              worldview advocated by Confucianism. John Little states that Lee
+              was an atheist. When asked in 1972 about his religious
+              affiliation, he replied, "none whatsoever", and when asked if he
+              believed in God, he said, "To be perfectly frank, I really do
+              not."
+            </p>
+          </div>
+        </div>
+        <div class="row py-5">
+          <div class="col-md-4">
+            <div
+              style="padding-bottom: 150%; border: 1px solid white"
+              class="position-relative mb-4"
+            >
+              <img
+                src="Lee-Bruce-funeral.jpg"
+                alt="action"
+                height="100%"
+                width="100%"
+                style="object-fit: cover; position: absolute"
+              />
+            </div>
+          </div>
+          <div class="col-md-8">
+            <h2 class="mb-3">Mysterious Death</h2>
+            <p>
+              On July 20, 1973, just one month before the premiere of Enter the
+              Dragon, Lee died in Hong Kong, China, at the age of 32. The
+              official cause of his sudden and utterly unexpected death was a
+              brain edema, found in an autopsy to have been caused by a strange
+              reaction to a prescription painkiller he was reportedly taking for
+              a back injury. Controversy surrounded Lee's death from the
+              beginning, as some claimed he had been murdered. There was also
+              the belief that he might have been cursed, a conclusion driven by
+              Lee's obsession with his own early death.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="container text-white">
+        <h2 class="mb-3">Mentality</h2>
+        <div class="position-relative w-100" style="padding-bottom: 56.25%">
+          <iframe
+            class="w-100 h-100 position-absolute"
+            src="https://www.youtube.com/embed/cJMwBwFj5nQ"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </main>
+    <footer class="d-flex justify-content-center align-items-center mt-5">
+      <strong>Bruce Lee Tribute</strong>
+    </footer>
+  </body>
+</html>

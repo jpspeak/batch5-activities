@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chessboard using CSS Grid</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+  </head>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    main {
+      /* display: flex;
+      justify-content: center;
+      align-items: center; */
+      height: 100vh;
+    }
+
+    .square {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .square:after {
+      content: "";
+      display: block;
+      padding-bottom: 100%;
+    }
+    .content {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+    }
+    .chessboard-container {
+      height: 100%;
+      border: 1px solid gray;
+      padding: 10px;
+
+      border-radius: 10px;
+      box-shadow: 10px 10px 10px gray;
+    }
+    .chessboard {
+      height: 100%;
+      border: 1px solid gray;
+    }
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      grid-template-rows: repeat(8, 1fr);
+      height: 100%;
+    }
+    .grid-item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      user-select: none;
+    }
+    .filled-box {
+      background-image: radial-gradient(#19c18f, #673882);
+    }
+    img {
+      width: 98%;
+      height: 98%;
+      cursor: grab;
+    }
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      /* grid-template-rows: 1fr auto 1fr; */
+      height: 100%;
+      padding: 10px;
+    }
+
+    .main-grid-center {
+      display: flex;
+      justify-content: center;
+      align-self: center;
+    }
+    .trash {
+      border: 1px solid gray;
+      border-radius: 10px;
+      height: 100%;
+      min-height: 100px;
+      width: 100%;
+      padding: 4px;
+      font-weight: bold;
+      /* display: flex; */
+
+      color: gray;
+    }
+    .trash > img {
+      height: auto;
+      width: 50px;
+    }
+    .trash span {
+      z-index: -1;
+    }
+    @media only screen and (max-width: 576px) {
+      .main-grid {
+        display: grid;
+        grid-template-columns: auto 4fr auto;
+        grid-template-rows: 1fr auto 1fr;
+        align-items: center;
+      }
+      .main-grid-left {
+        grid-column: 2/3;
+        grid-row: 1/2;
+      }
+      .main-grid-center {
+        grid-column: 2/3;
+        grid-row: 2/3;
+      }
+      .main-grid-right {
+        grid-column: 2/3;
+        grid-row: 3/4;
+      }
+      .trash {
+        max-height: 100px;
+      }
+      .trash > img {
+        height: auto;
+        width: 6vw;
+      }
+    }
+  </style>
+  <body>
+    <!-- <main>
+      <div class="square">
+        <div class="content">
+          <div class="chessboard-container">
+            <div class="chessboard">
+              <div id="grid">
+                <div class="grid-item">
+                  <img src="rook1.png" alt="rook-black" />
+                </div>
+                <div class="grid-item filled-box">
+                  <img src="horse1.png" alt="horse-black" />
+                </div>
+                <div class="grid-item"></div>
+                <div class="grid-item filled-box">
+                  <img src="king1.png" alt="king-black" />
+                </div>
+                <div class="grid-item">
+                  <img src="queen1.png" alt="queen-black" />
+                </div>
+                <div class="grid-item filled-box">
+                  <img src="bishop1.png" alt="bishop-black" />
+                </div>
+                <div class="grid-item"></div>
+                <div class="grid-item filled-box">
+                  <img src="rook1.png" alt="rook-black" />
+                </div>
+
+                <div class="grid-item filled-box">
+                  <img src="poon1.png" alt="poon-black" />
+                </div>
+                <div class="grid-item">
+                  <img src="poon1.png" alt="poon-black" />
+                </div>
+                <div class="grid-item filled-box">
+                  <img src="poon1.png" alt="poon-black" />
+                </div>
+                <div class="grid-item"></div>
+                <div class="grid-item filled-box">
+                  <img src="poon1.png" alt="poon-black" />
+                </div>
+                <div class="grid-item">
+                  <img src="poon1.png" alt="poon-black" />
+                </div>
+                <div class="grid-item filled-box">
+                  <img src="poon1.png" alt="poon-black" />
+                </div>
+                <div class="grid-item">
+                  <img src="poon1.png" alt="poon-black" />
+                </div>
+
+                <div class="grid-item"></div>
+                <div class="grid-item filled-box"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item filled-box">
+                  <img src="poon1.png" alt="poon-black" />
+                </div>
+                <div class="grid-item"></div>
+                <div class="grid-item filled-box">
+                  <img src="horse1.png" alt="horse-black" />
+                </div>
+                <div class="grid-item"></div>
+                <div class="grid-item filled-box"></div>
+
+                <div class="grid-item filled-box"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item filled-box"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item filled-box"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item filled-box"></div>
+                <div class="grid-item"></div>
+
+                <div class="grid-item"></div>
+                <div class="grid-item filled-box"></div>
+                <div class="grid-item">
+                  <img src="poon2.png" alt="poon-white" />
+                </div>
+                <div class="grid-item filled-box"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item filled-box"></div>
+                <div class="grid-item">
+                  <img src="bishop1.png" alt="bishop-black" />
+                </div>
+                <div class="grid-item filled-box"></div>
+
+                <div class="grid-item filled-box">
+                  <img src="horse2.png" alt="horse-white" />
+                </div>
+                <div class="grid-item"></div>
+                <div class="grid-item filled-box"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item filled-box">
+                  <img src="poon2.png" alt="poon-white" />
+                </div>
+                <div class="grid-item"></div>
+                <div class="grid-item filled-box"></div>
+                <div class="grid-item"></div>
+
+                <div class="grid-item">
+                  <img src="poon2.png" alt="poon-white" />
+                </div>
+                <div class="grid-item filled-box">
+                  <img src="poon2.png" alt="poon-white" />
+                </div>
+                <div class="grid-item"></div>
+                <div class="grid-item filled-box">
+                  <img src="poon2.png" alt="poon-white" />
+                </div>
+                <div class="grid-item"></div>
+                <div class="grid-item filled-box">
+                  <img src="poon2.png" alt="poon-white" />
+                </div>
+                <div class="grid-item">
+                  <img src="poon2.png" alt="poon-white" />
+                </div>
+                <div class="grid-item filled-box">
+                  <img src="poon2.png" alt="poon-white" />
+                </div>
+
+                <div class="grid-item filled-box">
+                  <img src="rook2.png" alt="rook-white" />
+                </div>
+                <div class="grid-item"></div>
+                <div class="grid-item filled-box">
+                  <img src="bishop2.png" alt="bishop-white" />
+                </div>
+                <div class="grid-item">
+                  <img src="king2.png" alt="king-white" />
+                </div>
+                <div class="grid-item filled-box">
+                  <img src="queen2.png" alt="queen-white" />
+                </div>
+                <div class="grid-item">
+                  <img src="bishop2.png" alt="bishop-white" />
+                </div>
+                <div class="grid-item filled-box">
+                  <img src="horse2.png" alt="horse-white" />
+                </div>
+                <div class="grid-item">
+                  <img src="rook2.png" alt="rook-white" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main> -->
+    <main>
+      <div class="main-grid">
+        <div class="main-grid-left">
+          <div class="trash"></div>
+        </div>
+        <div class="main-grid-center">
+          <div class="square">
+            <div class="content">
+              <div class="chessboard-container">
+                <div class="chessboard">
+                  <div id="grid">
+                    <div class="grid-item">
+                      <img src="rook1.png" alt="rook-black" id="black-rook-1" />
+                    </div>
+                    <div class="grid-item filled-box">
+                      <img
+                        src="horse1.png"
+                        alt="horse-black"
+                        id="black-horse-1"
+                      />
+                    </div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item filled-box">
+                      <img src="king1.png" alt="king-black" id="black-king-1" />
+                    </div>
+                    <div class="grid-item">
+                      <img
+                        src="queen1.png"
+                        alt="queen-black"
+                        id="black-queen-1"
+                      />
+                    </div>
+                    <div class="grid-item filled-box">
+                      <img
+                        src="bishop1.png"
+                        alt="bishop-black"
+                        id="black-bishop-1"
+                      />
+                    </div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item filled-box">
+                      <img src="rook1.png" alt="rook-black" id="black-rook-2" />
+                    </div>
+
+                    <div class="grid-item filled-box">
+                      <img src="poon1.png" alt="poon-black" id="black-poon-1" />
+                    </div>
+                    <div class="grid-item">
+                      <img src="poon1.png" alt="poon-black" id="black-poon-2" />
+                    </div>
+                    <div class="grid-item filled-box">
+                      <img src="poon1.png" alt="poon-black" id="black-poon-3" />
+                    </div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item filled-box">
+                      <img src="poon1.png" alt="poon-black" id="black-poon-4" />
+                    </div>
+                    <div class="grid-item">
+                      <img src="poon1.png" alt="poon-black" id="black-poon-5" />
+                    </div>
+                    <div class="grid-item filled-box">
+                      <img src="poon1.png" alt="poon-black" id="black-poon-6" />
+                    </div>
+                    <div class="grid-item">
+                      <img src="poon1.png" alt="poon-black" id="black-poon-7" />
+                    </div>
+
+                    <div class="grid-item"></div>
+                    <div class="grid-item filled-box"></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item filled-box">
+                      <img src="poon1.png" alt="poon-black" id="black-poon-8" />
+                    </div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item filled-box">
+                      <img
+                        src="horse1.png"
+                        alt="horse-black"
+                        id="black-horse-2"
+                      />
+                    </div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item filled-box"></div>
+
+                    <div class="grid-item filled-box"></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item filled-box"></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item filled-box"></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item filled-box"></div>
+                    <div class="grid-item"></div>
+
+                    <div class="grid-item"></div>
+                    <div class="grid-item filled-box"></div>
+                    <div class="grid-item">
+                      <img src="poon2.png" alt="poon-white" id="white-poon-1" />
+                    </div>
+                    <div class="grid-item filled-box"></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item filled-box"></div>
+                    <div class="grid-item">
+                      <img
+                        src="bishop1.png"
+                        alt="bishop-black"
+                        id="black-bishop-2"
+                      />
+                    </div>
+                    <div class="grid-item filled-box"></div>
+
+                    <div class="grid-item filled-box">
+                      <img
+                        src="horse2.png"
+                        alt="horse-white"
+                        id="white-horse-1"
+                      />
+                    </div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item filled-box"></div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item filled-box">
+                      <img src="poon2.png" alt="poon-white" id="white-poon-2" />
+                    </div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item filled-box"></div>
+                    <div class="grid-item"></div>
+
+                    <div class="grid-item">
+                      <img src="poon2.png" alt="poon-white" id="white-poon-3" />
+                    </div>
+                    <div class="grid-item filled-box">
+                      <img src="poon2.png" alt="poon-white" id="white-poon-4" />
+                    </div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item filled-box">
+                      <img src="poon2.png" alt="poon-white" id="white-poon-5" />
+                    </div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item filled-box">
+                      <img src="poon2.png" alt="poon-white" id="white-poon-6" />
+                    </div>
+                    <div class="grid-item">
+                      <img src="poon2.png" alt="poon-white" id="white-poon-7" />
+                    </div>
+                    <div class="grid-item filled-box">
+                      <img src="poon2.png" alt="poon-white" id="white-poon-8" />
+                    </div>
+
+                    <div class="grid-item filled-box">
+                      <img src="rook2.png" alt="rook-white" id="white-rook-1" />
+                    </div>
+                    <div class="grid-item"></div>
+                    <div class="grid-item filled-box">
+                      <img
+                        src="bishop2.png"
+                        alt="bishop-white"
+                        id="white-bishop-1"
+                      />
+                    </div>
+                    <div class="grid-item">
+                      <img src="king2.png" alt="king-white" id="white-king" />
+                    </div>
+                    <div class="grid-item filled-box">
+                      <img
+                        src="queen2.png"
+                        alt="queen-white"
+                        id="white-queen"
+                      />
+                    </div>
+                    <div class="grid-item">
+                      <img
+                        src="bishop2.png"
+                        alt="bishop-white"
+                        id="white-bishop-2"
+                      />
+                    </div>
+                    <div class="grid-item filled-box">
+                      <img
+                        src="horse2.png"
+                        alt="horse-white"
+                        id="white-horse-2"
+                      />
+                    </div>
+                    <div class="grid-item">
+                      <img src="rook2.png" alt="rook-white" id="white-rook-2" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="main-grid-right">
+          <div class="trash"></div>
+        </div>
+      </div>
+    </main>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+      function addDragListenerToImage() {
+        for (const draggableElement of document.querySelectorAll("img")) {
+          draggableElement.addEventListener("dragstart", (e) => {
+            e.dataTransfer.setData("text/plain", draggableElement.id);
+          });
+        }
+      }
+      function addDropListenerToEmptyGrid() {
+        for (const dropArea of document.querySelectorAll(".grid-item")) {
+          dropArea.addEventListener("dragover", (e) => {
+            e.preventDefault();
+          });
+          dropArea.addEventListener("drop", (e) => {
+            e.preventDefault();
+            const droppedElementId = e.dataTransfer.getData("text/plain");
+            const droppedElement = document.getElementById(droppedElementId);
+
+            if (e.target.nodeName !== "IMG") {
+              dropArea.appendChild(droppedElement);
+            }
+          });
+          dropArea.addEventListener("touchmove", (e) => {
+            e.preventDefault();
+          });
+          dropArea.addEventListener("touchleave", (e) => {
+            e.preventDefault();
+            const droppedElementId = e.dataTransfer.getData("text/plain");
+            const droppedElement = document.getElementById(droppedElementId);
+
+            if (e.target.nodeName !== "IMG") {
+              dropArea.appendChild(droppedElement);
+            }
+          });
+        }
+      }
+      function addDropListenerToTrash() {
+        for (const dropArea of document.querySelectorAll(".trash")) {
+          dropArea.addEventListener("dragover", (e) => {
+            e.preventDefault();
+          });
+          dropArea.addEventListener("drop", (e) => {
+            e.preventDefault();
+            const droppedElementId = e.dataTransfer.getData("text/plain");
+            const droppedElement = document.getElementById(droppedElementId);
+
+            if (e.target.nodeName !== "IMG") {
+              dropArea.appendChild(droppedElement);
+            }
+          });
+        }
+      }
+      addDragListenerToImage();
+      addDropListenerToEmptyGrid();
+      addDropListenerToTrash();
+
+      swal({
+        title: "Play chess! 🧠",
+        text: "Just drag and drop! 🤩",
+        button: "Play now!",
+      });
+    </script>
+  </body>
+</html>
