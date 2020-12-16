@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <style>
+    * {
+      box-sizing: border-box !important;
+      font-size: 1.3rem;
+      font-family: "Orbitron", sans-serif;
+    }
+    .wrapper {
+      max-width: 20rem;
+      margin: 0 auto;
+      border: 1px solid #eeeeee;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 0 0.5rem #757575;
+    }
+    .cal-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(6, 1fr);
+      width: 100%;
+      gap: 8px;
+    }
+    .cal-container div:first-child {
+      grid-column: 1/5;
+      grid-row: 1/2;
+    }
+    .cal-container .screen {
+      background-color: #eeeeee;
+      height: 100%;
+      border-radius: 0.5rem;
+      border: 1px solid #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: nowrap;
+      padding: 0 0.5rem;
+      font-size: 2rem;
+      box-shadow: inset 0.1rem 0.1rem 0.2rem #616161;
+      overflow: hidden;
+    }
+    .cal-container div:nth-child(20) {
+      grid-column: 3/5;
+      grid-row: 6/7;
+    }
+    .cal-container div:nth-child(n + 2) {
+      width: 100%;
+      padding-bottom: 100%;
+      position: relative;
+    }
+    .cal-container div:nth-child(20) {
+      padding-bottom: 50%;
+    }
+    .cal-container div .btn {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 0.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0.1rem 0.1rem 0.2rem #212121;
+      background-color: #757575;
+      color: #fff;
+      cursor: pointer;
+    }
+    .cal-container div .btn:active {
+      box-shadow: inset 0.1rem 0.1rem 0.2rem #616161;
+    }
+  </style>
+  <body>
+    <div class="wrapper">
+      <div class="cal-container">
+        <div>
+          <div class="screen"></div>
+        </div>
+
+        <div><div class="btn operator" data-operator="/">÷</div></div>
+        <div><div class="btn operator" data-operator="*">×</div></div>
+        <div><div class="btn operator" data-operator="-">−</div></div>
+        <div><div class="btn operator" data-operator="+">+</div></div>
+
+        <div><div class="btn number">7</div></div>
+        <div><div class="btn number">8</div></div>
+        <div><div class="btn number">9</div></div>
+        <div><div class="btn operator" data-operator="%">%</div></div>
+
+        <div><div class="btn number">4</div></div>
+        <div><div class="btn number">5</div></div>
+        <div><div class="btn number">6</div></div>
+        <div><div class="btn ac">AC</div></div>
+
+        <div><div class="btn number">1</div></div>
+        <div><div class="btn number">2</div></div>
+        <div><div class="btn number">3</div></div>
+        <div><div class="btn delete">⌫</div></div>
+
+        <div><div class="btn point">.</div></div>
+        <div><div class="btn number">0</div></div>
+        <div><div class="btn equals">=</div></div>
+      </div>
+    </div>
+    <script>
+      //Event Liteners
+      Array.from(document.querySelectorAll(".number")).forEach((element) => {
+        element.addEventListener("click", (e) => {
+          displayNumber(e);
+        });
+      });
+      function displayNumber(e) {
+        document.querySelector(".screen").innerHTML += e.target.innerHTML;
+      }
+      Array.from(document.querySelectorAll(".operator")).forEach((element) => {
+        element.addEventListener("click", (e) => {
+          displayOperator(e);
+        });
+      });
+      document.querySelector(".point").addEventListener("click", (e) => {
+        displayPoint();
+      });
+      document.querySelector(".delete").addEventListener("click", (e) => {
+        deleleteLastChar();
+      });
+      document.querySelector(".ac").addEventListener("click", (e) => {
+        clear();
+      });
+      document.querySelector(".equals").addEventListener("click", (e) => {
+        calculate();
+      });
+
+      window.addEventListener(
+        "error",
+        (err) => {
+          alert(err.message);
+        },
+        true
+      );
+      // On click functions
+      function displayOperator(e) {
+        const operator = e.target.innerHTML;
+        const screenChars = document.querySelector(".screen").innerHTML;
+        const screenLastChar = document
+          .querySelector(".screen")
+          .innerHTML.split("")
+          .pop();
+
+        if (["÷", "×", "−", "+", "%"].includes(screenLastChar)) {
+          document.querySelector(".screen").innerHTML =
+            screenChars.slice(0, -1) + operator;
+        } else {
+          if (!screenChars) {
+            document.querySelector(".screen").innerHTML = "0" + operator;
+          } else {
+            document.querySelector(".screen").innerHTML += operator;
+          }
+        }
+      }
+      function displayPoint() {
+        const screenChars = document.querySelector(".screen").innerHTML;
+        if (!screenChars.includes(".")) {
+          document.querySelector(".screen").innerHTML += ".";
+        }
+      }
+      function deleleteLastChar() {
+        const screenChars = document.querySelector(".screen").innerHTML;
+        document.querySelector(".screen").innerHTML = screenChars.slice(0, -1);
+      }
+      function clear() {
+        document.querySelector(".screen").innerHTML = "";
+      }
+      function calculate() {
+        const screenChars = document.querySelector(".screen").innerHTML;
+        const expression = screenChars
+          .replace("÷", "/")
+          .replace("×", "*")
+          .replace("−", "-");
+        console.log(expression);
+        if (screenChars) {
+          document.querySelector(".screen").innerHTML = eval(expression);
+        }
+      }
+    </script>
+  </body>
+</html>
