@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Playing Cards</title>
+  </head>
+  <style>
+    * {
+      box-sizing: border-box !important;
+      font-family: "Courier New", Courier, monospace;
+    }
+    button {
+      margin: 0.25rem 0;
+    }
+    #container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    #dealtCardContainer {
+      border: 1px dotted gray;
+      height: 100px;
+      width: 80px;
+      border-radius: 4px;
+    }
+    #dealtCard {
+      height: 100px;
+      width: 80px;
+      border: 1px solid gray;
+      box-shadow: 0 0 10px gray;
+      border-radius: 4px;
+      padding: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      position: relative;
+    }
+    #dealtCard #dealtCardValue {
+      width: 100%;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+    }
+    #dealtCard #dealtCardSuit {
+      font-size: 4rem;
+    }
+    #dealtCardText {
+      margin-top: 1rem;
+      margin-bottom: 2rem;
+      font-weight: bold;
+    }
+    #shuffledCards,
+    #pastDraws {
+      width: 400px;
+      word-wrap: break-word;
+      margin: 1rem 0;
+    }
+    #pastDrawsText {
+      margin-top: 3rem;
+    }
+    .red {
+      color: red;
+    }
+    hr {
+      border: 0;
+      clear: both;
+      display: block;
+      width: 96%;
+      background-color: gray;
+      height: 1px;
+    }
+  </style>
+  <body>
+    <div id="container">
+      <div id="dealtCard">
+        <div id="dealtCardValue"></div>
+        <div id="dealtCardSuit"></div>
+      </div>
+
+      <div id="dealtCardText">&nbsp;</div>
+      <div>Remaining Cards: <span id="remainingCards"></span></div>
+      <div id="shuffledCards"></div>
+      <div>
+        <button onclick="displayReshuffledDeck()">Reshuffle Deck</button>
+      </div>
+      <div>
+        <button onclick="dealCard()">Deal Card</button>
+      </div>
+
+      <div id="pastDrawsText">Past Draws:</div>
+      <div id="pastDraws">&nbsp;</div>
+      <div>
+        <button id="prev" onclick="prev()" disabled>Prev</button>
+        <button id="next" onclick="next()" disabled>Next</button>
+      </div>
+      <hr />
+      <div id="fiveCardsContainer"></div>
+      <button onclick="dealFiveCards()">Deal 5 Cards</button>
+      <hr />
+      <div>
+        <div>
+          DONE - ROYAL FLUSH, STRAIGHT FLUSH, STRAIGHT, FOUR OF A KIND, Three OF
+          A KIND, ONE PAIR
+        </div>
+        <div style="color: red">
+          PENDING - FULL HOUSE, FLUSH, TWO PAIR, HIGH CARD
+        </div>
+      </div>
+    </div>
+    <script>
+      var suits = ["♠", "♥", "♦", "♣"];
+      var values = [
+        "A",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "J",
+        "Q",
+        "K",
+      ];
+      //Creates an array of cards
+      function createDeck() {
+        let deck = [];
+
+        for (let i = 0; i < suits.length; i++) {
+          for (let k = 0; k < values.length; k++) {
+            const card = suits[i] + values[k];
+            deck.push(card);
+          }
+        }
+        return deck;
+      }
+      //Shuffle a card
+      function shuffleCards(cards) {
+        let arr = cards;
+        let shuffledCards = [];
+        while (arr.length) {
+          let randomNum = Math.floor(Math.random() * arr.length);
+          shuffledCards.push(arr[randomNum]);
+          arr.splice(randomNum, 1);
+        }
+        return shuffledCards;
+      }
+
+      //Group cards by suit
+      function arrangeBySuit(cards) {
+        let spades = [];
+        let hearts = [];
+        let diamonds = [];
+        let clubs = [];
+        for (const card of cards) {
+          let suit = card.slice(0, 1);
+
+          switch (suit) {
+            case "♠":
+              spades.push(card);
+              break;
+            case "♥":
+              hearts.push(card);
+              break;
+            case "♦":
+              diamonds.push(card);
+              break;
+            case "♣":
+              clubs.push(card);
+              break;
+          }
+        }
+        return [...spades, ...hearts, ...diamonds, ...clubs];
+      }
+
+      //Arrange cards by value
+      function arrangeByValue(cards, order) {
+        let arr = cards;
+        let newArr = arr.map((element) => {
+          switch (element.slice(1, 3)) {
+            case "A":
+              return element.slice(0, 1) + "1";
+            case "J":
+              return element.slice(0, 1) + "11";
+            case "Q":
+              return element.slice(0, 1) + "12";
+            case "K":
+              return element.slice(0, 1) + "13";
+            default:
+              return element;
+          }
+        });
+        if (order === "desc") {
+          for (let i = 0; i < newArr.length; i++) {
+            for (let k = 0; k < newArr.length; k++) {
+              if (
+                parseInt(newArr[k]?.slice(1, 3)) <
+                parseInt(newArr[k + 1]?.slice(1, 3))
+              ) {
+                let temp = newArr[k];
+                newArr[k] = newArr[k + 1];
+                newArr[k + 1] = temp;
+              }
+            }
+          }
+        } else {
+          for (let i = 0; i < newArr.length; i++) {
+            for (let k = 0; k < newArr.length; k++) {
+              if (
+                parseInt(newArr[k]?.slice(1, 3)) >
+                parseInt(newArr[k + 1]?.slice(1, 3))
+              ) {
+                let temp = newArr[k];
+                newArr[k] = newArr[k + 1];
+                newArr[k + 1] = temp;
+              }
+            }
+          }
+        }
+
+        arr = newArr.map((element) => {
+          switch (element.slice(1, 3)) {
+            case "1":
+              return element.slice(0, 1) + "A";
+            case "11":
+              return element.slice(0, 1) + "J";
+            case "12":
+              return element.slice(0, 1) + "Q";
+            case "13":
+              return element.slice(0, 1) + "K";
+            default:
+              return element;
+          }
+        });
+        return arr;
+      }
+
+      //Deal a string value of card
+      function dealCardAsText(card) {
+        let value = card.slice(1, 3);
+        let suit = card.slice(0, 1);
+        let cardTextValue = "";
+
+        switch (value) {
+          case "A":
+            cardTextValue = "Ace";
+            break;
+          case "2":
+            cardTextValue = "Two";
+            break;
+          case "3":
+            cardTextValue = "Three";
+            break;
+          case "4":
+            cardTextValue = "Four";
+            break;
+          case "5":
+            cardTextValue = "Five";
+            break;
+          case "6":
+            cardTextValue = "Six";
+            break;
+          case "7":
+            cardTextValue = "Seven";
+            break;
+          case "8":
+            cardTextValue = "Eight";
+            break;
+          case "9":
+            cardTextValue = "Nine";
+            break;
+          case "10":
+            cardTextValue = "Ten";
+            break;
+          case "J":
+            cardTextValue = "Jack";
+            break;
+          case "Q":
+            cardTextValue = "Queen";
+            break;
+          case "K":
+            cardTextValue = "King";
+            break;
+        }
+        switch (suit) {
+          case "♠":
+            cardTextValue = cardTextValue.concat(" of Spades");
+            break;
+          case "♥":
+            cardTextValue = cardTextValue.concat(" of Hearts");
+            break;
+          case "♦":
+            cardTextValue = cardTextValue.concat(" of Diamonds");
+            break;
+          case "♣":
+            cardTextValue = cardTextValue.concat(" of Clubs");
+            break;
+        }
+        return cardTextValue;
+      }
+
+      let cards = createDeck();
+      let pastDraws = [];
+      let dealtCard = "";
+      let pastDrawsCurrentIndex = null;
+
+      displayDeck();
+
+      function displayDeck() {
+        document.getElementById("shuffledCards").innerHTML = cards;
+      }
+
+      function displayReshuffledDeck() {
+        if (cards.length) {
+          cards = shuffleCards(cards);
+          document.getElementById("shuffledCards").innerHTML = cards;
+        } else {
+          pastDraws = [];
+          cards = createDeck();
+          cards = shuffleCards(cards);
+          document.getElementById("shuffledCards").innerHTML = cards;
+          document.getElementById("pastDraws").innerHTML = pastDraws;
+        }
+      }
+
+      function dealCard() {
+        document.getElementById("next").setAttribute("disabled", true);
+        pastDrawsCurrentIndex = null;
+        if (cards.length) {
+          dealtCard = cards.pop();
+          pastDraws.push(dealtCard);
+          document.getElementById("pastDraws").innerHTML = pastDraws;
+          document.getElementById("shuffledCards").innerHTML = cards;
+          displayDealtCard(dealtCard);
+        } else {
+          alert("No more cards");
+        }
+        if (pastDraws.length > 1) {
+          document.getElementById("prev").removeAttribute("disabled");
+        }
+      }
+      function prev() {
+        document.getElementById("next").removeAttribute("disabled");
+
+        if (pastDrawsCurrentIndex) {
+          pastDrawsCurrentIndex--;
+        } else {
+          pastDrawsCurrentIndex = pastDraws.length - 2;
+        }
+
+        let currentCard = pastDraws[pastDrawsCurrentIndex];
+
+        displayDealtCard(currentCard);
+
+        if (pastDrawsCurrentIndex == 0) {
+          document.getElementById("prev").setAttribute("disabled", true);
+        }
+      }
+      function next() {
+        document.getElementById("prev").removeAttribute("disabled");
+
+        if (pastDrawsCurrentIndex != null) {
+          pastDrawsCurrentIndex++;
+          let currentCard = pastDraws[pastDrawsCurrentIndex];
+
+          if (pastDrawsCurrentIndex == pastDraws.length - 1) {
+            document.getElementById("next").setAttribute("disabled", true);
+          }
+
+          displayDealtCard(currentCard);
+        }
+      }
+
+      function displayDealtCard(card) {
+        if (card.slice(0, 1) == "♥" || card.slice(0, 1) == "♦") {
+          document.getElementById("dealtCard").classList.add("red");
+        } else {
+          document.getElementById("dealtCard").classList.remove("red");
+        }
+        document.getElementById("dealtCardSuit").innerHTML = card.slice(0, 1);
+        document.getElementById("dealtCardValue").innerHTML = card.slice(1, 3);
+        document.getElementById("dealtCardText").innerHTML = dealCardAsText(
+          card
+        );
+      }
+
+      function dealFiveCards() {
+        // let cards = ["♠A", "♠J", "♠Q", "♠K", "♠10"];
+        //♦
+        // let cards = ["♠2", "♠3", "♠4", "♦5", "♠6"];
+        if (cards.length > 4) {
+          let fiveCards = cards.splice(0, 5);
+          displayDeck();
+          const pokerHand = identifyPokerHand(fiveCards);
+          if (pokerHand) {
+            document.getElementById(
+              "fiveCardsContainer"
+            ).innerHTML += `<div>${fiveCards} - <span>${pokerHand}</span></div>`;
+          } else {
+            document.getElementById(
+              "fiveCardsContainer"
+            ).innerHTML += `<div>${fiveCards}</div>`;
+          }
+        }
+      }
+
+      function identifyPokerHand(cards) {
+        if (isRoyalFlush(cards)) {
+          return "ROYAL FLUSH";
+        } else if (isStraightFlush(cards)) {
+          return "STRAIGHT FLUSH";
+        } else if (isStraight(cards)) {
+          return "STRAIGHT";
+        } else if (isFourOfAKind(cards)) {
+          return "FOUR OF A KIND";
+        } else if (isThreeOfAKind(cards)) {
+          return "Three OF A KIND";
+        } else if (isOnePair(cards)) {
+          return "ONE PAIR";
+        }
+      }
+
+      function isRoyalFlush(cards) {
+        let cardsValue = cards.map((card) => {
+          return card.slice(1, 3);
+        });
+        if (
+          cardsValue.includes("A") &&
+          cardsValue.includes("J") &&
+          cardsValue.includes("Q") &&
+          cardsValue.includes("K") &&
+          cardsValue.includes("10")
+        ) {
+          return "true";
+        } else {
+          return false;
+        }
+      }
+
+      function isStraightFlush(cards) {
+        let straightFlash = false;
+        cards = arrangeByValue(cards);
+        let suit = null;
+
+        for (const card of cards) {
+          if (suit == null) {
+            suit = card.slice(0, 1);
+          } else {
+            if (card.slice(0, 1) != suit) {
+              return false;
+            }
+          }
+        }
+
+        return isStraight(cards);
+      }
+      function isStraight(cards) {
+        // cards = ["♥7", "♥8", "♥9", "♥10", "♦Q"];
+        // cards = ["♥5", "♥4", "♥3", "♥2", "♦2"];
+        if (isStraightAscending() || isStraightDescending()) {
+          return true;
+        }
+        return false;
+        function isStraightAscending() {
+          let straight = false;
+          cards = convertFaceToNumber(cards);
+          cards = sort(cards);
+
+          for (let i = 0; i < cards?.length - 1; i++) {
+            if (
+              parseInt(cards[i].slice(1, 3)) + 1 ==
+              parseInt(cards[i + 1]?.slice(1, 3))
+            ) {
+              straight = true;
+            } else {
+              return false;
+            }
+          }
+          return straight;
+        }
+        function isStraightDescending() {
+          let straight = false;
+          cards = convertFaceToNumber(cards);
+          cards = sort(cards, "desc");
+
+          for (let i = 0; i < cards?.length - 1; i++) {
+            if (
+              parseInt(cards[i].slice(1, 3)) + 1 ==
+              parseInt(cards[i + 1]?.slice(1, 3))
+            ) {
+              straight = true;
+            } else {
+              return false;
+            }
+          }
+          return straight;
+        }
+      }
+      function isFourOfAKind(cards) {
+        // cards = ["♠3", "♠3", "♠3", "♠4", "♠4"];
+        cards = [...cards];
+        let similar = 0;
+
+        for (let i = 0; i < 5; i++) {
+          let card = cards.splice(0, 1);
+          for (let j = 0; j < 4; j++) {
+            if (card[0].slice(1, 3) == cards[j]?.slice(1, 3)) {
+              similar++;
+            }
+
+            if (similar > 2) {
+              return true;
+            }
+          }
+          similar = 0;
+          cards = [...cards, ...card];
+        }
+        return false;
+      }
+      function isThreeOfAKind(cards) {
+        // cards = ["♠3", "♠3", "♠A", "♠4", "♠4"];
+        cards = [...cards];
+        let similar = 0;
+
+        for (let i = 0; i < 5; i++) {
+          let card = cards.splice(0, 1);
+          for (let j = 0; j < 4; j++) {
+            if (card[0].slice(1, 3) == cards[j]?.slice(1, 3)) {
+              similar++;
+            }
+
+            if (similar > 1) {
+              return true;
+            }
+          }
+          similar = 0;
+          cards = [...cards, ...card];
+        }
+        return false;
+      }
+      function isOnePair(cards) {
+        // cards = ["♠3", "♠1", "♠A", "♠J", "♠K"];
+        cards = [...cards];
+        let similar = 0;
+
+        for (let i = 0; i < 5; i++) {
+          let card = cards.splice(0, 1);
+          for (let j = 0; j < 4; j++) {
+            if (card[0].slice(1, 3) == cards[j]?.slice(1, 3)) {
+              similar++;
+            }
+
+            if (similar > 0) {
+              return true;
+            }
+          }
+          similar = 0;
+          cards = [...cards, ...card];
+        }
+        return false;
+      }
+      function convertFaceToNumber(cards) {
+        let numericCards = cards?.map((element) => {
+          switch (element.slice(1, 3)) {
+            case "A":
+              return element.slice(0, 1) + "1";
+            case "J":
+              return element.slice(0, 1) + "11";
+            case "Q":
+              return element.slice(0, 1) + "12";
+            case "K":
+              return element.slice(0, 1) + "13";
+            default:
+              return element;
+          }
+        });
+        return numericCards;
+      }
+      function sort(cards, order) {
+        let newArr = cards;
+        if (order === "desc") {
+          for (let i = 0; i < newArr?.length; i++) {
+            for (let k = 0; k < newArr?.length; k++) {
+              if (
+                parseInt(newArr[k]?.slice(1, 3)) <
+                parseInt(newArr[k + 1]?.slice(1, 3))
+              ) {
+                let temp = newArr[k];
+                newArr[k] = newArr[k + 1];
+                newArr[k + 1] = temp;
+              }
+            }
+          }
+        } else {
+          for (let i = 0; i < newArr?.length; i++) {
+            for (let k = 0; k < newArr?.length; k++) {
+              if (
+                parseInt(newArr[k]?.slice(1, 3)) >
+                parseInt(newArr[k + 1]?.slice(1, 3))
+              ) {
+                let temp = newArr[k];
+                newArr[k] = newArr[k + 1];
+                newArr[k + 1] = temp;
+              }
+            }
+          }
+        }
+        return newArr;
+      }
+    </script>
+  </body>
+</html>
