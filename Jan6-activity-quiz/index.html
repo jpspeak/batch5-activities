@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz</title>
+  </head>
+  <body>
+    <script>
+      const questions = [
+        {
+          question: "What does HTML stand for?",
+          choices: [
+            { letter: "A", value: "Hyper Text Markup Language" },
+            { letter: "B", value: "Hot Mail" },
+            { letter: "C", value: "How to Make Lasagna" },
+          ],
+          answer: "A",
+        },
+        {
+          question: "How many tags are in a regular element?",
+          choices: [
+            { letter: "A", value: "2" },
+            { letter: "B", value: "1" },
+            { letter: "C", value: "3" },
+          ],
+          answer: "A",
+        },
+        {
+          question:
+            "What is the difference in an opening tag and a closing tag?",
+          choices: [
+            { letter: "A", value: "Opening tag has a / in front" },
+            { letter: "B", value: "Closing tag has a / in front" },
+            { letter: "C", value: "There is no difference" },
+          ],
+          answer: "B",
+        },
+        {
+          question: "< br  / > What type of tag is this?",
+          choices: [
+            { letter: "A", value: "Break tag" },
+            { letter: "B", value: "A broken one" },
+            { letter: "C", value: "An opening tag" },
+          ],
+          answer: "A",
+        },
+        {
+          question: "< body > Is this an opening tag or a closing tag?",
+          choices: [
+            { letter: "A", value: "Opening" },
+            { letter: "B", value: "Closing" },
+          ],
+          answer: "A",
+        },
+        {
+          question: "Where is the meta tag only found?",
+          choices: [
+            { letter: "A", value: "The last page" },
+            { letter: "B", value: "The home page" },
+            { letter: "C", value: "The second page" },
+          ],
+          answer: "B",
+        },
+      ];
+      let rightAnswer;
+      let answer;
+
+      function startQuiz() {
+        displayQuestion();
+        inputAnswer();
+        checkAnswer();
+      }
+
+      function inputAnswer() {
+        answer = prompt("Please enter your answer");
+        answer = answer.toLocaleUpperCase();
+      }
+
+      function checkAnswer() {
+        if (answer == rightAnswer) {
+          console.log("Your answer is correct!");
+        } else {
+          console.log("Wrong answer :(");
+        }
+      }
+
+      function displayQuestion() {
+        const randomNumber = Math.floor(Math.random() * questions.length);
+        const question = questions[randomNumber];
+        rightAnswer = question.answer;
+        console.log(question.question);
+        for (const choice of question.choices) {
+          console.log(choice["letter"] + ")", choice["value"]);
+        }
+      }
+    </script>
+  </body>
+</html>
