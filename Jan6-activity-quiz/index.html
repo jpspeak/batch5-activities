@@ -5,7 +5,78 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quiz</title>
   </head>
+  <style>
+    * {
+      font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    }
+    button {
+      cursor: pointer;
+      border-radius: 4px;
+      padding: 10px 10px;
+      border: none;
+    }
+    #container {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    #startQuizBtn {
+      background-color: rgb(7, 177, 7);
+      color: white;
+    }
+    #submit {
+      float: right;
+      background-color: rgb(0, 123, 255);
+      margin: 0 4px;
+      color: white;
+    }
+    #exitQuizBtn {
+      float: right;
+    }
+    #question-container {
+      max-width: 400px;
+      padding: 10px 24px;
+      border-radius: 10px;
+      box-shadow: 0 0 4px gray;
+    }
+    #choices {
+      list-style-type: none;
+      padding: 0;
+    }
+    .show {
+      display: block !important;
+    }
+    .hide {
+      display: none !important;
+    }
+    #result {
+      text-align: center;
+    }
+    #correctAnswer,
+    #wrongAnswer {
+      font-size: 2rem;
+    }
+  </style>
   <body>
+    <div id="container">
+      <h1>HTML Basic Quiz!</h1>
+      <button id="startQuizBtn" onclick="startQuiz()">Start Quiz</button>
+      <div id="result" class="hide">
+        <h4>
+          Correct answer: <span id="correctAnswer">0</span> | Wrong answer:
+          <span id="wrongAnswer">0</span>
+        </h4>
+      </div>
+      <div id="question-container" class="hide">
+        <h3 id="question">What is your name?</h3>
+        <ul type="A" id="choices"></ul>
+        <button id="exitQuizBtn" onclick="exitQuiz()">Exit</button>
+        <button id="submit" onclick="submit()">Submit</button>
+      </div>
+    </div>
     <script>
       const questions = [
         {
@@ -62,37 +133,233 @@
           ],
           answer: "B",
         },
+        {
+          question: "Who is making the Web standards?",
+          choices: [
+            { letter: "A", value: "Microsoft" },
+            { letter: "B", value: "Mozilla" },
+            { letter: "C", value: "The World Wide Web Consortium" },
+          ],
+          answer: "C",
+        },
+        {
+          question: "Choose the correct HTML element for the largest heading:",
+          choices: [
+            { letter: "A", value: "&lt;h6>" },
+            { letter: "B", value: "&lt;head>" },
+            { letter: "C", value: "&lt;h1>" },
+          ],
+          answer: "C",
+        },
+        {
+          question: "What is the correct HTML for adding a background color?",
+          choices: [
+            { letter: "A", value: "&lt;background>yellow</background>" },
+            {
+              letter: "B",
+              value: "&lt;body style='background-color: yellow;'>",
+            },
+            { letter: "C", value: "&lt;body bg='yellow' >" },
+          ],
+          answer: "B",
+        },
+        {
+          question: "Choose the correct HTML element to define important text",
+          choices: [
+            { letter: "A", value: "&lt;i>" },
+            { letter: "B", value: "&lt;important>" },
+            { letter: "C", value: "&lt;strong>" },
+          ],
+          answer: "C",
+        },
+        {
+          question: "Choose the correct HTML element to define emphasized text",
+          choices: [
+            { letter: "A", value: "&lt;italic>" },
+            { letter: "B", value: "&lt;em>" },
+            { letter: "C", value: "&lt;i>" },
+          ],
+          answer: "B",
+        },
+        {
+          question: "Which character is used to indicate an end tag?",
+          choices: [
+            { letter: "A", value: "/" },
+            { letter: "B", value: "&lt;" },
+            { letter: "C", value: "*" },
+          ],
+          answer: "B",
+        },
+        {
+          question: "How can you open a link in a new tab/browser window?",
+          choices: [
+            { letter: "A", value: "&lt;a href='url' target='_blank'>" },
+            { letter: "B", value: "&lt;a href='url' new>" },
+            { letter: "C", value: "&lt;a href='url' target='new'>" },
+          ],
+          answer: "A",
+        },
+        {
+          question: "Which of these elements are all <table> elements?",
+          choices: [
+            { letter: "A", value: "&lt;table>&lt;tr>&lt;td>" },
+            { letter: "B", value: "&lt;table>&lt;tr>&lt;tt>" },
+            { letter: "C", value: "&lt;table>&lt;head>&lt;tfoot>" },
+          ],
+          answer: "A",
+        },
+        {
+          question:
+            "Inline elements are normally displayed without starting a new line.",
+          choices: [
+            { letter: "A", value: "False" },
+            { letter: "B", value: "True" },
+          ],
+          answer: "B",
+        },
+        {
+          question: "How can you make a numbered list?",
+          choices: [
+            { letter: "A", value: "&lt;ul>" },
+            { letter: "B", value: "&lt;ol>" },
+            { letter: "C", value: "&lt;dl>" },
+          ],
+          answer: "B",
+        },
+        {
+          question: "How can you make a bulleted list?",
+          choices: [
+            { letter: "A", value: "&lt;ul>" },
+            { letter: "B", value: "&lt;dl>" },
+            { letter: "C", value: "&lt;ol>" },
+          ],
+          answer: "A",
+        },
+        {
+          question: "What is the correct HTML for making a checkbox?",
+          choices: [
+            { letter: "A", value: "&lt;input type='checkbox'>" },
+            { letter: "B", value: "&lt;checkbox>" },
+            { letter: "C", value: "&lt;check>" },
+          ],
+          answer: "A",
+        },
+        {
+          question: "What is the correct HTML for making a drop-down list?",
+          choices: [
+            { letter: "A", value: "&lt;input type='dropdown'>" },
+            { letter: "B", value: "&lt;list>" },
+            { letter: "C", value: "&lt;select>" },
+          ],
+          answer: "C",
+        },
+        {
+          question: "What is the correct HTML for making a text area?",
+          choices: [
+            { letter: "A", value: "&lt;textarea>" },
+            { letter: "B", value: "&lt;input type='textbox'>" },
+            { letter: "C", value: "&lt;input type='textarea'>" },
+          ],
+          answer: "A",
+        },
+        {
+          question:
+            "An <iframe> is used to display a web page within a web page.",
+          choices: [
+            { letter: "A", value: "False" },
+            { letter: "B", value: "True" },
+            { letter: "C", value: "There is no such thing as an <ifram>" },
+          ],
+          answer: "B",
+        },
       ];
       let rightAnswer;
       let answer;
+      let correctAnswer = 0;
+      let wrongAnswer = 0;
+      let consecutiveRight = 0;
 
       function startQuiz() {
+        answer = 0;
         displayQuestion();
-        inputAnswer();
-        checkAnswer();
+      }
+      function exitQuiz() {
+        correctAnswer = 0;
+        wrongAnswer = 0;
+        consecutiveRight = 0;
+        document.getElementById("question-container").classList.remove("show");
+        document.getElementById("question-container").classList.add("hide");
+        document.getElementById("result").classList.remove("show");
+        document.getElementById("result").classList.add("hide");
+        document.getElementById("startQuizBtn").classList.remove("hide");
+        document.getElementById("startQuizBtn").classList.add("show");
+        displayResult();
       }
 
-      function inputAnswer() {
-        answer = prompt("Please enter your answer");
-        answer = answer.toLocaleUpperCase();
+      function submit() {
+        answer = document.querySelector('input[name="letter"]:checked')?.value;
+        if (answer) {
+          checkAnswer();
+          displayResult();
+          startQuiz();
+        } else {
+          alert("Please select an answer");
+        }
       }
 
       function checkAnswer() {
         if (answer == rightAnswer) {
-          console.log("Your answer is correct!");
+          correctAnswer++;
+          incrementConsecutiveRight();
+          // console.log("Your answer is correct!", "Score: ", correctAnswer);
         } else {
+          wrongAnswer++;
+          resetConsecutiveRight();
           console.log("Wrong answer :(");
         }
+        checkConsecutiveRight();
       }
-
+      function checkConsecutiveRight() {
+        if (consecutiveRight && !(consecutiveRight % 5)) {
+          alert(`Great! ${consecutiveRight} correct answers in a row!`);
+        }
+      }
+      function incrementConsecutiveRight() {
+        consecutiveRight++;
+      }
+      function resetConsecutiveRight() {
+        consecutiveRight = 0;
+      }
       function displayQuestion() {
         const randomNumber = Math.floor(Math.random() * questions.length);
         const question = questions[randomNumber];
         rightAnswer = question.answer;
-        console.log(question.question);
+        // console.log("");
+        // console.log(question.question);
+        // for (const choice of question.choices) {
+        //   console.log(choice["letter"] + ")", choice["value"]);
+        // }
+        //DOM
+        document.getElementById("choices").innerHTML = "";
+        document.getElementById("question").innerHTML = question.question;
+        document.getElementById("question-container").classList.remove("hide");
+        document.getElementById("question-container").classList.add("show");
+        document.getElementById("result").classList.remove("hide");
+        document.getElementById("result").classList.add("show");
+        document.getElementById("startQuizBtn").classList.add("hide");
+
         for (const choice of question.choices) {
-          console.log(choice["letter"] + ")", choice["value"]);
+          document.getElementById("choices").innerHTML += `
+            <li>
+              <input type='radio' name='letter' id='${choice["letter"]}' value='${choice["letter"]}'/>
+              <label for='${choice["letter"]}'>${choice["value"]}</label>
+            </li>
+            `;
         }
+      }
+      function displayResult() {
+        document.getElementById("correctAnswer").innerHTML = correctAnswer;
+        document.getElementById("wrongAnswer").innerHTML = wrongAnswer;
       }
     </script>
   </body>
