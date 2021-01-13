@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Store</title>
+  </head>
+  <body></body>
+  <script>
+    const store = {
+      name: "Tindahan Store",
+      inventory: {
+        books: [],
+        addBook: function (title, quantity, price) {
+          this.books.push({
+            title: title,
+            quantity: quantity,
+            price: price,
+          });
+        },
+        restockBook: function (title, quantity) {
+          //   this.books.forEach((book) => {
+          //     if (book.title === title) {
+          //       book.title = title;
+          //       book.quantity = quantity;
+          //     }
+          //   });
+          this.books.find((book) => {
+            if (book.title === title) {
+              book.quantity += quantity;
+              return true;
+            }
+          });
+        },
+        sellBook: function (title, quantity) {
+          let book = this.books.find((book) => {
+            if (book.title === title) {
+              if (book.quantity >= quantity) {
+                book.quantity -= quantity;
+                store.earnings += book.price * quantity;
+                console.log("Successful transaction");
+              } else {
+                console.log(`Only ${book.quantity} stocks left`);
+              }
+
+              return true;
+            }
+          });
+          if (!book) {
+            console.log(`${title} out of stock`);
+          }
+        },
+      },
+      earnings: 0,
+      totalEarnings: function () {
+        console.log(`${this.name} total earnings: ${earnings}`);
+      },
+      listInventory: function () {
+        this.inventory.books.forEach((book) => {
+          console.log(
+            `title: ${book.title}, quantity: ${book.quantity}, price: ${book.price}`
+          );
+        });
+      },
+    };
+  </script>
+</html>
