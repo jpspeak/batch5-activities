@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chess Game</title>
+  </head>
+  <style>
+    * {
+      box-sizing: border-box !important;
+    }
+    #main-container {
+      margin: 0 auto;
+      max-width: 600px;
+      height: 97vh;
+      display: flex;
+      align-items: center;
+    }
+    #sub-container {
+      width: 100%;
+      padding-bottom: 100%;
+      position: relative;
+    }
+    #chessboard {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      border: 1px solid gray;
+      border-radius: 5px;
+      box-shadow: 0px 0px 10px gray;
+      overflow: hidden;
+      /* padding: 10px; */
+      padding-top: 1.5rem;
+      padding-right: 1.5rem;
+      background-image: url("wood.jpg");
+      background-repeat: no-repeat;
+    }
+    #grid {
+      display: grid;
+      grid-template-columns: auto repeat(8, 1fr);
+      grid-template-rows: repeat(8, 1fr) auto;
+      height: 100%;
+    }
+    #grid div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    #grid .black-cell {
+      /* background-image: url("wood.jpg"); */
+      /* border: 2px groove darkgray; */
+    }
+    #grid .white-cell {
+      background-image: url("white-wood.jpg");
+      /* border: 1px groove darkgray; */
+    }
+    #grid div img {
+      width: 99%;
+      height: 99%;
+      cursor: pointer;
+      /* position: absolute; */
+    }
+    .selected {
+      /* background: #00c5a7 !important; */
+      background: radial-gradient(rgba(255, 255, 255, 1), black) !important;
+    }
+    .checked {
+      /* background: #00c5a7 !important; */
+      background: radial-gradient(rgba(255, 255, 255, 1), red) !important;
+    }
+    .move-guide::after {
+      content: "";
+      height: 100%;
+      width: 100%;
+      background: radial-gradient(
+        50% 50% at 50% 50%,
+        rgba(0, 0, 0, 0.5) 50.05%,
+        rgba(0, 0, 0, 0) 53.21%
+      );
+      position: absolute;
+      cursor: pointer;
+    }
+    .capture-guide::before {
+      content: "";
+      height: 100%;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      /* background: radial-gradient(
+        50% 50% at 50% 50%,
+        rgb(0, 197, 167, 0.5) 50.05%,
+        rgba(0, 0, 0, 0) 53.21%
+      ); */
+      position: absolute;
+      cursor: pointer;
+    }
+    .pointer-events-none {
+      pointer-events: none;
+    }
+    #grid span {
+      display: block;
+      height: 1.5rem;
+      width: 1.5rem;
+      font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+      color: wheat;
+      text-align: center;
+    }
+    .border-top {
+      border-top: 2px groove darkgray;
+    }
+    .border-right {
+      border-right: 2px groove darkgray;
+    }
+    .border-bottom {
+      border-bottom: 2px groove darkgray;
+    }
+    .border-left {
+      border-left: 2px groove darkgray;
+    }
+  </style>
+  <body>
+    <div id="main-container">
+      <div id="sub-container">
+        <div id="chessboard">
+          <div id="grid">
+            <span>8</span>
+            <div
+              data-coordinates="1/1"
+              class="white-cell border-top border-left"
+            >
+              <img src="rook-black.png" alt="" id="rook-black-1" />
+            </div>
+            <div data-coordinates="1/2" class="black-cell border-top">
+              <img src="knight-black.png" alt="" id="knight-black-1" />
+            </div>
+            <div data-coordinates="1/3" class="white-cell border-top">
+              <img src="bishop-black.png" alt="" id="bishop-black-1" />
+            </div>
+            <div data-coordinates="1/4" class="black-cell border-top">
+              <img src="queen-black.png" alt="" id="queen-black" />
+            </div>
+            <div data-coordinates="1/5" class="white-cell border-top">
+              <img src="king-black.png" alt="" id="king-black" />
+            </div>
+            <div data-coordinates="1/6" class="black-cell border-top">
+              <img src="bishop-black.png" alt="" id="bishop-black-2" />
+            </div>
+            <div data-coordinates="1/7" class="white-cell border-top">
+              <img src="knight-black.png" alt="" id="knight-black-2" />
+            </div>
+            <div
+              data-coordinates="1/8"
+              class="black-cell border-top border-right"
+            >
+              <img src="rook-black.png" alt="" id="rook-black-2" />
+            </div>
+
+            <span>7</span>
+            <div data-coordinates="2/1" class="black-cell border-left">
+              <img src="pawn-black.png" alt="" id="pawn-black-1" />
+            </div>
+            <div data-coordinates="2/2" class="white-cell">
+              <img src="pawn-black.png" alt="" id="pawn-black-2" />
+            </div>
+            <div data-coordinates="2/3" class="black-cell">
+              <img src="pawn-black.png" alt="" id="pawn-black-3" />
+            </div>
+            <div data-coordinates="2/4" class="white-cell">
+              <img src="pawn-black.png" alt="" id="pawn-black-4" />
+            </div>
+            <div data-coordinates="2/5" class="black-cell">
+              <img src="pawn-black.png" alt="" id="pawn-black-5" />
+            </div>
+            <div data-coordinates="2/6" class="white-cell">
+              <img src="pawn-black.png" alt="" id="pawn-black-6" />
+            </div>
+            <div data-coordinates="2/7" class="black-cell">
+              <img src="pawn-black.png" alt="" id="pawn-black-7" />
+            </div>
+            <div data-coordinates="2/8" class="white-cell border-right">
+              <img src="pawn-black.png" alt="" id="pawn-black-8" />
+            </div>
+
+            <span>6</span>
+            <div data-coordinates="3/1" class="white-cell border-left"></div>
+            <div data-coordinates="3/2" class="black-cell"></div>
+            <div data-coordinates="3/3" class="white-cell"></div>
+            <div data-coordinates="3/4" class="black-cell"></div>
+            <div data-coordinates="3/5" class="white-cell"></div>
+            <div data-coordinates="3/6" class="black-cell"></div>
+            <div data-coordinates="3/7" class="white-cell"></div>
+            <div data-coordinates="3/8" class="black-cell border-right"></div>
+
+            <span>5</span>
+            <div data-coordinates="4/1" class="black-cell border-left"></div>
+            <div data-coordinates="4/2" class="white-cell"></div>
+            <div data-coordinates="4/3" class="black-cell"></div>
+            <div data-coordinates="4/4" class="white-cell"></div>
+            <div data-coordinates="4/5" class="black-cell"></div>
+            <div data-coordinates="4/6" class="white-cell"></div>
+            <div data-coordinates="4/7" class="black-cell"></div>
+            <div data-coordinates="4/8" class="white-cell border-right"></div>
+
+            <span>4</span>
+            <div data-coordinates="5/1" class="white-cell border-left"></div>
+            <div data-coordinates="5/2" class="black-cell"></div>
+            <div data-coordinates="5/3" class="white-cell"></div>
+            <div data-coordinates="5/4" class="black-cell"></div>
+            <div data-coordinates="5/5" class="white-cell"></div>
+            <div data-coordinates="5/6" class="black-cell"></div>
+            <div data-coordinates="5/7" class="white-cell"></div>
+            <div data-coordinates="5/8" class="black-cell border-right"></div>
+
+            <span>3</span>
+            <div data-coordinates="6/1" class="black-cell border-left"></div>
+            <div data-coordinates="6/2" class="white-cell"></div>
+            <div data-coordinates="6/3" class="black-cell"></div>
+            <div data-coordinates="6/4" class="white-cell"></div>
+            <div data-coordinates="6/5" class="black-cell"></div>
+            <div data-coordinates="6/6" class="white-cell"></div>
+            <div data-coordinates="6/7" class="black-cell"></div>
+            <div data-coordinates="6/8" class="white-cell border-right"></div>
+
+            <span>2</span>
+            <div data-coordinates="7/1" class="white-cell border-left">
+              <img src="pawn-white.png" alt="" id="pawn-white-1" />
+            </div>
+            <div data-coordinates="7/2" class="black-cell">
+              <img src="pawn-white.png" alt="" id="pawn-white-2" />
+            </div>
+            <div data-coordinates="7/3" class="white-cell">
+              <img src="pawn-white.png" alt="" id="pawn-white-3" />
+            </div>
+            <div data-coordinates="7/4" class="black-cell">
+              <img src="pawn-white.png" alt="" id="pawn-white-4" />
+            </div>
+            <div data-coordinates="7/5" class="white-cell">
+              <img src="pawn-white.png" alt="" id="pawn-white-5" />
+            </div>
+            <div data-coordinates="7/6" class="black-cell">
+              <img src="pawn-white.png" alt="" id="pawn-white-6" />
+            </div>
+            <div data-coordinates="7/7" class="white-cell">
+              <img src="pawn-white.png" alt="" id="pawn-white-7" />
+            </div>
+            <div data-coordinates="7/8" class="black-cell border-right">
+              <img src="pawn-white.png" alt="" id="pawn-white-8" />
+            </div>
+
+            <span>1</span>
+            <div
+              data-coordinates="8/1"
+              class="black-cell border-bottom border-left"
+            >
+              <img src="rook-white.png" alt="" id="rook-white-1" />
+            </div>
+            <div data-coordinates="8/2" class="white-cell border-bottom">
+              <img src="knight-white.png" alt="" id="knight-white-1" />
+            </div>
+            <div data-coordinates="8/3" class="black-cell border-bottom">
+              <img src="bishop-white.png" alt="" id="bishop-white-1" />
+            </div>
+            <div data-coordinates="8/4" class="white-cell border-bottom">
+              <img src="queen-white.png" alt="" id="queen-white" />
+            </div>
+            <div data-coordinates="8/5" class="black-cell border-bottom">
+              <img src="king-white.png" alt="" id="king-white" />
+            </div>
+            <div data-coordinates="8/6" class="white-cell border-bottom">
+              <img src="bishop-white.png" alt="" id="bishop-white-2" />
+            </div>
+            <div data-coordinates="8/7" class="black-cell border-bottom">
+              <img src="knight-white.png" alt="" id="knight-white-2" />
+            </div>
+            <div
+              data-coordinates="8/8"
+              class="white-cell border-right border-bottom"
+            >
+              <img src="rook-white.png" alt="" id="rook-white-2" />
+            </div>
+
+            <span></span>
+            <span>a</span>
+            <span>b</span>
+            <span>c</span>
+            <span>d</span>
+            <span>e</span>
+            <span>f</span>
+            <span>g</span>
+            <span>h</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const pieces = document.querySelectorAll("img");
+      const whiteKing = document.getElementById("king-white");
+      const blackKing = document.getElementById("king-black");
+      let previousSquareOfSelected;
+      let playerTurn = "white";
+      let selectedPieceData = {
+        pieceID: "",
+        piece: "",
+        player: "",
+        coordinates: "",
+      };
+      let castlingState = {
+        white: {
+          rookA1NotMoved: true,
+          rookH1NotMoved: true,
+          kingNotMoved: true,
+        },
+        black: {
+          rookA8NotMoved: true,
+          rookH8NotMoved: true,
+          kingNotMoved: true,
+        },
+      };
+
+      for (const piece of pieces) {
+        piece.addEventListener("dragstart", (e) => {
+          // e.dataTransfer.setData("text/plain", piece.id);
+          onPieceSelected(e.target);
+        });
+
+        piece.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (e.target === e.currentTarget) {
+            onPieceSelected(e.target);
+          }
+        });
+      }
+      for (const dropArea of document.querySelectorAll("#grid div")) {
+        dropArea.addEventListener("dragover", (e) => {
+          e.preventDefault();
+        });
+        dropArea.addEventListener("drop", (e) => {
+          e.preventDefault();
+          onPieceDropped(e);
+        });
+        dropArea.addEventListener("click", (e) => {
+          if (e.target === e.currentTarget) {
+            onPieceDropped(e);
+          }
+        });
+      }
+
+      function onPieceSelected(element) {
+        const player = element.id?.split("-")[1];
+        if (playerTurn === player) {
+          const pieceID = element.id;
+          previousSquareOfSelected = element.parentElement;
+          if (pieceID === selectedPieceData.pieceID) {
+            clearPieceSelection();
+          } else {
+            clearPieceSelection();
+            selectPiece(element);
+          }
+        }
+      }
+
+      function onPieceDropped(event) {
+        const droppedPiece = document.getElementById(selectedPieceData.pieceID);
+        // const droppedPiece = document.getElementById(
+        //   event.dataTransfer.getData("text/plain")
+        // );
+        const coordinates = event.target.dataset.coordinates;
+        if (droppableAreaCoordinates()?.includes(coordinates)) {
+          //move
+          if (event.currentTarget.children[0]) {
+            event.currentTarget.children[0].remove();
+          }
+          event.currentTarget.append(droppedPiece);
+          removeSelectedHighlight();
+          removeGuidesHighlight();
+
+          if (droppedPiece.id === "king-black" && coordinates === "1/7") {
+            const rookCastlingDropArea = document.querySelector(
+              `[data-coordinates='1/6']`
+            );
+            rookCastlingDropArea.append(
+              document.getElementById("rook-black-2")
+            );
+          }
+          if (droppedPiece.id === "king-black" && coordinates === "1/3") {
+            const rookCastlingDropArea = document.querySelector(
+              `[data-coordinates='1/4']`
+            );
+            rookCastlingDropArea.append(
+              document.getElementById("rook-black-1")
+            );
+          }
+          if (droppedPiece.id === "king-white" && coordinates === "8/7") {
+            const rookCastlingDropArea = document.querySelector(
+              `[data-coordinates='8/6']`
+            );
+            rookCastlingDropArea.append(
+              document.getElementById("rook-white-2")
+            );
+          }
+          if (droppedPiece.id === "king-white" && coordinates === "8/3") {
+            const rookCastlingDropArea = document.querySelector(
+              `[data-coordinates='8/4']`
+            );
+            rookCastlingDropArea.append(
+              document.getElementById("rook-white-1")
+            );
+          }
+          //check if king is checked
+          if (playerTurn === "white") {
+            if (isWhiteKingChecked()) {
+              previousSquareOfSelected.append(droppedPiece);
+              clearPieceSelection();
+            } else {
+              switchPlayerTurn();
+              if (isBlackKingChecked()) {
+                blackKing.parentElement.classList.add("checked");
+              } else {
+                document.querySelector(".checked")?.classList.remove("checked");
+              }
+              castlingPieceMove(droppedPiece);
+            }
+          } else {
+            if (isBlackKingChecked()) {
+              previousSquareOfSelected.append(droppedPiece);
+              clearPieceSelection();
+            } else {
+              switchPlayerTurn();
+              if (isWhiteKingChecked()) {
+                whiteKing.parentElement.classList.add("checked");
+              } else {
+                document.querySelector(".checked")?.classList.remove("checked");
+              }
+              castlingPieceMove(droppedPiece);
+            }
+          }
+        } else {
+          clearPieceSelection();
+        }
+      }
+
+      function castlingPieceMove(piece) {
+        piece = piece.id;
+        switch (piece) {
+          case "king-black":
+            castlingState.black.kingNotMoved = false;
+            break;
+          case "rook-black-1":
+            castlingState.black.rookA8NotMoved = false;
+            break;
+          case "rook-black-2":
+            castlingState.black.rookH8NotMoved = false;
+            break;
+          case "king-white":
+            castlingState.white.kingNotMoved = false;
+            break;
+          case "rook-white-1":
+            castlingState.white.rookA1NotMoved = false;
+            break;
+          case "rook-white-2":
+            castlingState.white.rookH1NotMoved = false;
+            break;
+          default:
+            break;
+        }
+      }
+
+      function isWhiteKingChecked() {
+        const blackKingSquareCoordinates =
+          blackKing.parentElement.dataset.coordinates;
+        const whiteKingSquareCoordinates =
+          whiteKing.parentElement.dataset.coordinates;
+
+        if (
+          isCapturableByPawn(whiteKingSquareCoordinates) ||
+          isCapturableByBishop(whiteKingSquareCoordinates) ||
+          isCapturableByKnight(whiteKingSquareCoordinates) ||
+          isCapturableByRook(whiteKingSquareCoordinates) ||
+          isCapturableByQueen(whiteKingSquareCoordinates)
+        ) {
+          return true;
+        }
+        return false;
+      }
+      function isBlackKingChecked() {
+        const blackKingSquareCoordinates =
+          blackKing.parentElement.dataset.coordinates;
+        const whiteKingSquareCoordinates =
+          whiteKing.parentElement.dataset.coordinates;
+
+        if (
+          isCapturableByPawn(blackKingSquareCoordinates) ||
+          isCapturableByBishop(blackKingSquareCoordinates) ||
+          isCapturableByKnight(blackKingSquareCoordinates) ||
+          isCapturableByRook(blackKingSquareCoordinates) ||
+          isCapturableByQueen(blackKingSquareCoordinates)
+        ) {
+          return true;
+        }
+        return false;
+      }
+
+      function selectPiece(element) {
+        const pieceID = element.id;
+        const piece = element.id.split("-")[0];
+        const player = element.id.split("-")[1];
+        const coordinates = element.parentElement.dataset.coordinates;
+        selectedPieceData.pieceID = pieceID;
+        selectedPieceData.piece = piece;
+        selectedPieceData.player = player;
+        selectedPieceData.coordinates = coordinates;
+        highlightSelected(element);
+        hightlightGuides();
+      }
+
+      function clearPieceSelection() {
+        selectedPieceData.pieceID = "";
+        selectedPieceData.piece = "";
+        selectedPieceData.player = "";
+        selectedPieceData.coordinates = "";
+        removeSelectedHighlight();
+        removeGuidesHighlight();
+      }
+
+      function switchPlayerTurn() {
+        if (playerTurn === "white") {
+          playerTurn = "black";
+        } else {
+          playerTurn = "white";
+        }
+      }
+
+      function highlightSelected(element) {
+        element.parentElement.classList.add("selected");
+      }
+
+      function removeSelectedHighlight() {
+        document.querySelector(".selected")?.classList.remove("selected");
+      }
+
+      function hightlightGuides() {
+        droppableAreaCoordinates().forEach((coordinates) => {
+          const dropArea = document.querySelector(
+            `[data-coordinates='${coordinates}']`
+          );
+          if (dropArea?.children.length) {
+            dropArea?.classList.add("capture-guide");
+          } else {
+            dropArea?.classList.add("move-guide");
+          }
+        });
+      }
+
+      function removeGuidesHighlight() {
+        for (const element of document.querySelectorAll(".move-guide")) {
+          element.classList.remove("move-guide");
+        }
+        for (const element of document.querySelectorAll(".capture-guide")) {
+          element.classList.remove("capture-guide");
+        }
+      }
+
+      function droppableAreaCoordinates() {
+        const piece = selectedPieceData.piece;
+        const player = selectedPieceData.player;
+        const coordinates = selectedPieceData.coordinates;
+        const row = parseInt(coordinates.split("/")[0]);
+        const col = parseInt(coordinates.split("/")[1]);
+        let droppableAreaCoordinates = [];
+
+        // only applies for rook,bishop and queen
+        function addNextAreaCoordinates(direction) {
+          let i = 1;
+          while (i < 9) {
+            let condition;
+            let nextCol;
+            let nextRow;
+            let coordinates;
+            switch (direction) {
+              case "E":
+                nextCol = col + i;
+                coordinates = row + "/" + nextCol;
+                condition = nextCol < 9;
+                break;
+              case "W":
+                nextCol = col - i;
+                coordinates = row + "/" + nextCol;
+                condition = nextCol > 0;
+                break;
+              case "N":
+                nextRow = row - i;
+                coordinates = nextRow + "/" + col;
+                condition = nextRow > 0;
+                break;
+              case "S":
+                nextRow = row + i;
+                coordinates = nextRow + "/" + col;
+                condition = nextRow < 9;
+                break;
+              case "NE":
+                nextRow = row - i;
+                nextCol = col + i;
+                coordinates = nextRow + "/" + nextCol;
+                condition = nextRow > 0 && nextCol < 9;
+                break;
+              case "SE":
+                nextRow = row + i;
+                nextCol = col + i;
+                coordinates = nextRow + "/" + nextCol;
+                condition = nextRow < 9 && nextCol < 9;
+                break;
+              case "SW":
+                nextRow = row + i;
+                nextCol = col - i;
+                coordinates = nextRow + "/" + nextCol;
+                condition = nextRow < 9 && nextCol > 0;
+                break;
+              case "NW":
+                nextRow = row - i;
+                nextCol = col - i;
+                coordinates = nextRow + "/" + nextCol;
+                condition = nextRow > 0 && nextCol > 0;
+                break;
+              default:
+                break;
+            }
+
+            if (condition) {
+              let dropArea = document.querySelector(
+                `[data-coordinates='${coordinates}']`
+              );
+              const nextPiece = dropArea.children[0]?.id.split("-")[1];
+              const opponentPiece = player === "white" ? "black" : "white";
+              if (!dropArea.children.length || nextPiece === opponentPiece) {
+                if (nextPiece === opponentPiece) {
+                  droppableAreaCoordinates.push(coordinates);
+                  i = 9;
+                } else {
+                  droppableAreaCoordinates.push(coordinates);
+                  i++;
+                }
+              } else {
+                i = 9;
+              }
+            } else {
+              i = 9;
+            }
+          }
+        }
+
+        switch (piece) {
+          case "pawn":
+            if (player === "white") {
+              let limit = 2;
+              if (row === 7) {
+                limit = 3;
+              }
+
+              for (let i = 1; i < limit; i++) {
+                let coordinates = row - i + "/" + col;
+                const element = document.querySelector(
+                  `[data-coordinates='${coordinates}']`
+                );
+                if (element?.children.length) {
+                  break;
+                } else {
+                  droppableAreaCoordinates.push(coordinates);
+                }
+              }
+              for (let i = -1; i < 2; i += 2) {
+                let coordinates = row - 1 + "/" + (col + i);
+                const element = document.querySelector(
+                  `[data-coordinates='${coordinates}']`
+                );
+                if (element?.children.length) {
+                  if (element.children[0].id.split("-")[1] === "black")
+                    droppableAreaCoordinates.push(coordinates);
+                }
+              }
+            }
+            if (player === "black") {
+              let limit = 2;
+              if (row === 2) {
+                limit = 3;
+              }
+
+              for (let i = 1; i < limit; i++) {
+                let coordinates = row + i + "/" + col;
+                const element = document.querySelector(
+                  `[data-coordinates='${coordinates}']`
+                );
+                if (element?.children.length) {
+                  break;
+                } else {
+                  droppableAreaCoordinates.push(coordinates);
+                }
+              }
+              for (let i = -1; i < 2; i += 2) {
+                let coordinates = row + 1 + "/" + (col + i);
+                const element = document.querySelector(
+                  `[data-coordinates='${coordinates}']`
+                );
+                if (element?.children.length) {
+                  if (element.children[0].id.split("-")[1] === "white")
+                    droppableAreaCoordinates.push(coordinates);
+                }
+              }
+            }
+            return droppableAreaCoordinates;
+          case "knight":
+            droppableAreaCoordinates = [
+              row - 2 + "/" + (col - 1),
+              row - 2 + "/" + (col + 1),
+              row - 1 + "/" + (col + 2),
+              row + 1 + "/" + (col + 2),
+              row + 2 + "/" + (col + 1),
+              row + 2 + "/" + (col - 1),
+              row + 1 + "/" + (col - 2),
+              row - 1 + "/" + (col - 2),
+            ];
+            droppableAreaCoordinates = droppableAreaCoordinates.filter(
+              (coordinates) => {
+                const dropArea = document.querySelector(
+                  `[data-coordinates='${coordinates}']`
+                );
+                if (
+                  !dropArea?.children.length ||
+                  dropArea.children[0]?.id.split("-")[1] ===
+                    (player === "white" ? "black" : "white")
+                ) {
+                  return true;
+                }
+                return false;
+              }
+            );
+            return droppableAreaCoordinates;
+          case "rook":
+            addNextAreaCoordinates("E");
+            addNextAreaCoordinates("W");
+            addNextAreaCoordinates("N");
+            addNextAreaCoordinates("S");
+            return droppableAreaCoordinates;
+          case "bishop":
+            addNextAreaCoordinates("NE");
+            addNextAreaCoordinates("SE");
+            addNextAreaCoordinates("SW");
+            addNextAreaCoordinates("NW");
+            return droppableAreaCoordinates;
+          case "queen":
+            addNextAreaCoordinates("E");
+            addNextAreaCoordinates("W");
+            addNextAreaCoordinates("N");
+            addNextAreaCoordinates("S");
+            addNextAreaCoordinates("NE");
+            addNextAreaCoordinates("SE");
+            addNextAreaCoordinates("SW");
+            addNextAreaCoordinates("NW");
+            return droppableAreaCoordinates;
+          case "king":
+            droppableAreaCoordinates = [
+              row - 1 + "/" + col,
+              row - 1 + "/" + (col + 1),
+              row + "/" + (col + 1),
+              row + "/" + (col + 2),
+              row + 1 + "/" + (col + 1),
+              row + 1 + "/" + col,
+              row + 1 + "/" + (col - 1),
+              row + "/" + (col - 1),
+              row + "/" + (col - 2),
+              row - 1 + "/" + (col - 1),
+            ];
+            droppableAreaCoordinates = droppableAreaCoordinates.filter(
+              (coordinates) => {
+                const dropArea = document.querySelector(
+                  `[data-coordinates='${coordinates}']`
+                );
+                if (
+                  !dropArea?.children.length ||
+                  dropArea.children[0]?.id.split("-")[1] ===
+                    (player === "white" ? "black" : "white")
+                ) {
+                  return true;
+                }
+                return false;
+              }
+            );
+            droppableAreaCoordinates = droppableAreaCoordinates.filter(
+              (coordinates) => {
+                return !isCapturableByPawn(coordinates);
+              }
+            );
+            droppableAreaCoordinates = droppableAreaCoordinates.filter(
+              (coordinates) => {
+                return !isCapturableByKnight(coordinates);
+              }
+            );
+            droppableAreaCoordinates = droppableAreaCoordinates.filter(
+              (coordinates) => {
+                return !isCapturableByBishop(coordinates);
+              }
+            );
+            droppableAreaCoordinates = droppableAreaCoordinates.filter(
+              (coordinates) => {
+                return !isCapturableByRook(coordinates);
+              }
+            );
+            droppableAreaCoordinates = droppableAreaCoordinates.filter(
+              (coordinates) => {
+                return !isCapturableByQueen(coordinates);
+              }
+            );
+            droppableAreaCoordinates = droppableAreaCoordinates.filter(
+              (coordinates) => {
+                return !isCapturableByKing(coordinates);
+              }
+            );
+            droppableAreaCoordinates = droppableAreaCoordinates.filter(
+              (coordinates) => {
+                if (coordinates === "1/3") {
+                  if (
+                    castlingState.black.kingNotMoved &&
+                    castlingState.black.rookA8NotMoved
+                  ) {
+                    return true;
+                  }
+                  return false;
+                } else if (coordinates === "1/7") {
+                  if (
+                    castlingState.black.kingNotMoved &&
+                    castlingState.black.rookH8NotMoved
+                  ) {
+                    return true;
+                  }
+                  return false;
+                } else if (coordinates === "8/3") {
+                  if (
+                    castlingState.white.kingNotMoved &&
+                    castlingState.white.rookA1NotMoved
+                  ) {
+                    return true;
+                  }
+                  return false;
+                } else if (coordinates === "8/7") {
+                  if (
+                    castlingState.white.kingNotMoved &&
+                    castlingState.white.rookH1NotMoved
+                  ) {
+                    return true;
+                  }
+                  return false;
+                } else {
+                  return true;
+                }
+              }
+            );
+            droppableAreaCoordinates = droppableAreaCoordinates.filter(
+              (coordinates) => {
+                if (coordinates === "1/3") {
+                  if (
+                    droppableAreaCoordinates.includes("1/4") &&
+                    document.querySelector(`[data-coordinates='1/2']`).children
+                      .length === 0
+                  ) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                } else if (coordinates === "1/7") {
+                  if (droppableAreaCoordinates.includes("1/6")) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                } else if (coordinates === "8/3") {
+                  if (
+                    droppableAreaCoordinates.includes("8/4") &&
+                    document.querySelector(`[data-coordinates='8/2']`).children
+                      .length === 0
+                  ) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                } else if (coordinates === "8/7") {
+                  if (droppableAreaCoordinates.includes("8/6")) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                } else {
+                  return true;
+                }
+              }
+            );
+
+            return droppableAreaCoordinates;
+
+          default:
+            break;
+        }
+      }
+
+      function isCapturableByPawn(coordinates) {
+        const row = parseInt(coordinates.split("/")[0]);
+        const col = parseInt(coordinates.split("/")[1]);
+        let leftSquareCoordinates;
+        let rightSquareCoordinates;
+        let isCapturableByPawn = false;
+        if (playerTurn === "white") {
+          leftSquareCoordinates = row - 1 + "/" + (col - 1);
+          rightSquareCoordinates = row - 1 + "/" + (col + 1);
+        } else {
+          leftSquareCoordinates = row + 1 + "/" + (col - 1);
+          rightSquareCoordinates = row + 1 + "/" + (col + 1);
+        }
+        const leftSquare = document.querySelector(
+          `[data-coordinates='${leftSquareCoordinates}']`
+        );
+        const leftPiece = leftSquare?.children[0]?.id.split("-")[0];
+        const leftPlayer = leftSquare?.children[0]?.id.split("-")[1];
+
+        const rightSquare = document.querySelector(
+          `[data-coordinates='${rightSquareCoordinates}']`
+        );
+        const rightPiece = rightSquare?.children[0]?.id.split("-")[0];
+        const rightPlayer = rightSquare?.children[0]?.id.split("-")[1];
+        if (
+          (leftPlayer === (playerTurn === "white" ? "black" : "white") &&
+            leftPiece === "pawn") ||
+          (rightPlayer === (playerTurn === "white" ? "black" : "white") &&
+            rightPiece === "pawn")
+        ) {
+          isCapturableByPawn = true;
+        } else {
+          isCapturableByPawn = false;
+        }
+
+        return isCapturableByPawn;
+      }
+      function isCapturableByKnight(coordinates) {
+        const row = parseInt(coordinates.split("/")[0]);
+        const col = parseInt(coordinates.split("/")[1]);
+        squareCoordinates = [
+          row - 2 + "/" + (col - 1),
+          row - 2 + "/" + (col + 1),
+          row - 1 + "/" + (col + 2),
+          row + 1 + "/" + (col + 2),
+          row + 2 + "/" + (col + 1),
+          row + 2 + "/" + (col - 1),
+          row + 1 + "/" + (col - 2),
+          row - 1 + "/" + (col - 2),
+        ];
+        const hasKnight = squareCoordinates.find((coordinates) => {
+          const square = document.querySelector(
+            `[data-coordinates='${coordinates}']`
+          );
+          const squarePiece = square?.children[0]?.id.split("-")[0];
+          const squarePlayer = square?.children[0]?.id.split("-")[1];
+          if (
+            squarePlayer === (playerTurn === "white" ? "black" : "white") &&
+            squarePiece === "knight"
+          ) {
+            return true;
+          }
+          return false;
+        });
+        return hasKnight ? true : false;
+      }
+      function isCapturableByBishop(coordinates) {
+        if (
+          checkPiece("NE", coordinates) === "bishop" ||
+          checkPiece("SE", coordinates) === "bishop" ||
+          checkPiece("SW", coordinates) === "bishop" ||
+          checkPiece("NW", coordinates) === "bishop"
+        ) {
+          return true;
+        }
+        return false;
+      }
+      function isCapturableByRook(coordinates) {
+        if (
+          checkPiece("N", coordinates) === "rook" ||
+          checkPiece("E", coordinates) === "rook" ||
+          checkPiece("S", coordinates) === "rook" ||
+          checkPiece("W", coordinates) === "rook"
+        ) {
+          return true;
+        }
+        return false;
+      }
+      function isCapturableByQueen(coordinates) {
+        if (
+          checkPiece("N", coordinates) === "queen" ||
+          checkPiece("E", coordinates) === "queen" ||
+          checkPiece("S", coordinates) === "queen" ||
+          checkPiece("W", coordinates) === "queen" ||
+          checkPiece("NE", coordinates) === "queen" ||
+          checkPiece("SE", coordinates) === "queen" ||
+          checkPiece("SW", coordinates) === "queen" ||
+          checkPiece("NW", coordinates) === "queen"
+        ) {
+          return true;
+        }
+        return false;
+      }
+      function isCapturableByKing(coordinates) {
+        const row = parseInt(coordinates.split("/")[0]);
+        const col = parseInt(coordinates.split("/")[1]);
+        squareCoordinates = [
+          row - 1 + "/" + col,
+          row - 1 + "/" + (col + 1),
+          row + "/" + (col + 1),
+          row + 1 + "/" + (col + 1),
+          row + 1 + "/" + col,
+          row + 1 + "/" + (col - 1),
+          row + "/" + (col - 1),
+          row - 1 + "/" + (col - 1),
+        ];
+        const hasKing = squareCoordinates.find((coordinates) => {
+          const square = document.querySelector(
+            `[data-coordinates='${coordinates}']`
+          );
+          const squarePiece = square?.children[0]?.id.split("-")[0];
+          const squarePlayer = square?.children[0]?.id.split("-")[1];
+          if (
+            squarePlayer ===
+              (selectedPieceData.player === "white" ? "black" : "white") &&
+            squarePiece === "king"
+          ) {
+            return true;
+          }
+          return false;
+        });
+        return hasKing ? true : false;
+      }
+
+      // checks piece; for bishop rook and queen only
+      function checkPiece(direction, coordinates) {
+        const row = parseInt(coordinates?.split("/")[0]);
+        const col = parseInt(coordinates?.split("/")[1]);
+        let i = 1;
+        while (i < 9) {
+          let condition;
+          let nextCol;
+          let nextRow;
+          let coordinates;
+          switch (direction) {
+            case "E":
+              nextCol = col + i;
+              coordinates = row + "/" + nextCol;
+              condition = nextCol < 9;
+              break;
+            case "W":
+              nextCol = col - i;
+              coordinates = row + "/" + nextCol;
+              condition = nextCol > 0;
+              break;
+            case "N":
+              nextRow = row - i;
+              coordinates = nextRow + "/" + col;
+              condition = nextRow > 0;
+              break;
+            case "S":
+              nextRow = row + i;
+              coordinates = nextRow + "/" + col;
+              condition = nextRow < 9;
+              break;
+            case "NE":
+              nextRow = row - i;
+              nextCol = col + i;
+              coordinates = nextRow + "/" + nextCol;
+              condition = nextRow > 0 && nextCol < 9;
+              break;
+            case "SE":
+              nextRow = row + i;
+              nextCol = col + i;
+              coordinates = nextRow + "/" + nextCol;
+              condition = nextRow < 9 && nextCol < 9;
+              break;
+            case "SW":
+              nextRow = row + i;
+              nextCol = col - i;
+              coordinates = nextRow + "/" + nextCol;
+              condition = nextRow < 9 && nextCol > 0;
+              break;
+            case "NW":
+              nextRow = row - i;
+              nextCol = col - i;
+              coordinates = nextRow + "/" + nextCol;
+              condition = nextRow > 0 && nextCol > 0;
+              break;
+            default:
+              break;
+          }
+
+          if (condition) {
+            let dropArea = document.querySelector(
+              `[data-coordinates='${coordinates}']`
+            );
+            const nextPiece = dropArea?.children[0]?.id.split("-")[0];
+            const nextPiecePlayer = dropArea?.children[0]?.id.split("-")[1];
+            const opponentPlayer = playerTurn === "white" ? "black" : "white";
+            if (
+              !dropArea?.children.length ||
+              nextPiecePlayer === opponentPlayer
+            ) {
+              if (nextPiecePlayer === opponentPlayer) {
+                return nextPiece;
+                i = 9;
+              } else {
+                i++;
+              }
+            } else {
+              return null;
+              i = 9;
+            }
+          } else {
+            return null;
+            i = 9;
+          }
+        }
+      }
+      function startTimer() {
+        let milliSeconds = 0;
+        setInterval(function () {
+          milliSeconds += 1000;
+          console.log(milliSeconds);
+        }, 1000);
+      }
+      // startTimer();
+    </script>
+  </body>
+</html>

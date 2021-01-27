@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chess Game</title>
+  </head>
+  <style>
+    * {
+      box-sizing: border-box !important;
+    }
+    #main-container {
+      margin: 0 auto;
+      max-width: 600px;
+    }
+    #sub-container {
+      width: 100%;
+      padding-bottom: 100%;
+      position: relative;
+    }
+    #chessboard {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      border: 1px solid gray;
+      border-radius: 5px;
+      box-shadow: 0px 0px 10px gray;
+      overflow: hidden;
+      padding: 10px;
+      background-image: url("wood.jpg");
+      background-repeat: no-repeat;
+    }
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      grid-template-rows: repeat(8, 1fr);
+      border: 1px ridge gray;
+      height: 100%;
+    }
+    #grid div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #grid .black-cell {
+      background-image: url("wood.jpg");
+    }
+    #grid .white-cell {
+      background-image: url("white-wood.jpg");
+    }
+    #grid div img {
+      width: 99%;
+      cursor: pointer;
+    }
+    .selected {
+      background: #e06e09 !important;
+    }
+    .guide {
+      background: greenyellow !important;
+    }
+  </style>
+  <body>
+    <div id="main-container">
+      <div id="sub-container">
+        <div id="chessboard">
+          <div id="grid">
+            <div
+              data-row="1"
+              data-col="1"
+              class="white-cell"
+              data-piece="rook-black"
+            >
+              <img
+                src="rook-black.png"
+                alt=""
+                id="rook-black-1"
+                data-piece="rook-black"
+              />
+            </div>
+            <div
+              data-row="1"
+              data-col="2"
+              class="black-cell"
+              data-piece="knight-black"
+            >
+              <img
+                src="knight-black.png"
+                alt=""
+                id="knight-black-1"
+                data-piece="knight-black"
+              />
+            </div>
+            <div
+              data-row="1"
+              data-col="3"
+              class="white-cell"
+              data-piece="bishop-black"
+            >
+              <img
+                src="bishop-black.png"
+                alt=""
+                id="bishop-black-1"
+                data-piece="bishop-black"
+              />
+            </div>
+            <div
+              data-row="1"
+              data-col="4"
+              class="black-cell"
+              data-piece="queen-black"
+            >
+              <img
+                src="queen-black.png"
+                alt=""
+                id="queen-black"
+                data-piece="queen-black"
+              />
+            </div>
+            <div
+              data-row="1"
+              data-col="5"
+              class="white-cell"
+              data-piece="king-black"
+            >
+              <img
+                src="king-black.png"
+                alt=""
+                id="king-black"
+                data-piece="king-black"
+              />
+            </div>
+            <div
+              data-row="1"
+              data-col="6"
+              class="black-cell"
+              data-piece="bishop-black"
+            >
+              <img
+                src="bishop-black.png"
+                alt=""
+                id="bishop-black-2"
+                data-piece="bishop-black"
+              />
+            </div>
+            <div
+              data-row="1"
+              data-col="7"
+              class="white-cell"
+              data-piece="knight-black"
+            >
+              <img
+                src="knight-black.png"
+                alt=""
+                id="knight-black-2"
+                data-piece="knight-black"
+              />
+            </div>
+            <div
+              data-row="1"
+              data-col="8"
+              class="black-cell"
+              data-piece="rook-black"
+            >
+              <img
+                src="rook-black.png"
+                alt=""
+                id="rook-black-2"
+                data-piece="rook-black"
+              />
+            </div>
+
+            <div
+              data-row="2"
+              data-col="1"
+              class="black-cell"
+              data-piece="poon-black"
+            >
+              <img
+                src="poon-black.png"
+                alt=""
+                id="poon-black-1"
+                data-piece="poon-black"
+              />
+            </div>
+            <div
+              data-row="2"
+              data-col="2"
+              class="white-cell"
+              data-piece="poon-black"
+            >
+              <img
+                src="poon-black.png"
+                alt=""
+                id="poon-black-2"
+                data-piece="poon-black"
+              />
+            </div>
+            <div
+              data-row="2"
+              data-col="3"
+              class="black-cell"
+              data-piece="poon-black"
+            >
+              <img
+                src="poon-black.png"
+                alt=""
+                id="poon-black-3"
+                data-piece="poon-black"
+              />
+            </div>
+            <div
+              data-row="2"
+              data-col="4"
+              class="white-cell"
+              data-piece="poon-black"
+            >
+              <img
+                src="poon-black.png"
+                alt=""
+                id="poon-black-4"
+                data-piece="poon-black"
+              />
+            </div>
+            <div
+              data-row="2"
+              data-col="5"
+              class="black-cell"
+              data-piece="poon-black"
+            >
+              <img
+                src="poon-black.png"
+                alt=""
+                id="poon-black-5"
+                data-piece="poon-black"
+              />
+            </div>
+            <div data-row="2" data-col="6" class="white-cell">
+              <img
+                src="poon-black.png"
+                alt=""
+                id="poon-black-6"
+                data-piece="poon-black"
+              />
+            </div>
+            <div
+              data-row="2"
+              data-col="7"
+              class="black-cell"
+              data-piece="poon-black"
+            >
+              <img
+                src="poon-black.png"
+                alt=""
+                id="poon-black-7"
+                data-piece="poon-black"
+              />
+            </div>
+            <div
+              data-row="2"
+              data-col="8"
+              class="white-cell"
+              data-piece="poon-black"
+            >
+              <img
+                src="poon-black.png"
+                alt=""
+                id="poon-black-8"
+                data-piece="poon-black"
+              />
+            </div>
+
+            <div
+              data-row="3"
+              data-col="1"
+              class="white-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="3"
+              data-col="2"
+              class="black-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="3"
+              data-col="3"
+              class="white-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="3"
+              data-col="4"
+              class="black-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="3"
+              data-col="5"
+              class="white-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="3"
+              data-col="6"
+              class="black-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="3"
+              data-col="7"
+              class="white-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="3"
+              data-col="8"
+              class="black-cell"
+              data-piece=""
+            ></div>
+
+            <div
+              data-row="4"
+              data-col="1"
+              class="black-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="4"
+              data-col="2"
+              class="white-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="4"
+              data-col="3"
+              class="black-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="4"
+              data-col="4"
+              class="white-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="4"
+              data-col="5"
+              class="black-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="4"
+              data-col="6"
+              class="white-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="4"
+              data-col="7"
+              class="black-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="4"
+              data-col="8"
+              class="white-cell"
+              data-piece=""
+            ></div>
+
+            <div
+              data-row="5"
+              data-col="1"
+              class="white-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="5"
+              data-col="2"
+              class="black-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="5"
+              data-col="3"
+              class="white-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="5"
+              data-col="4"
+              class="black-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="5"
+              data-col="5"
+              class="white-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="5"
+              data-col="6"
+              class="black-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="5"
+              data-col="7"
+              class="white-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="5"
+              data-col="8"
+              class="black-cell"
+              data-piece=""
+            ></div>
+
+            <div
+              data-row="6"
+              data-col="1"
+              class="black-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="6"
+              data-col="2"
+              class="white-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="6"
+              data-col="3"
+              class="black-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="6"
+              data-col="4"
+              class="white-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="6"
+              data-col="5"
+              class="black-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="6"
+              data-col="6"
+              class="white-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="6"
+              data-col="7"
+              class="black-cell"
+              data-piece=""
+            ></div>
+            <div
+              data-row="6"
+              data-col="8"
+              class="white-cell"
+              data-piece=""
+            ></div>
+
+            <div
+              data-row="7"
+              data-col="1"
+              class="white-cell"
+              data-piece="poon-white"
+            >
+              <img
+                src="poon-white.png"
+                alt=""
+                id="poon-white-1"
+                data-piece="poon-white"
+              />
+            </div>
+            <div
+              data-row="7"
+              data-col="2"
+              class="black-cell"
+              data-piece="poon-white"
+            >
+              <img
+                src="poon-white.png"
+                alt=""
+                id="poon-white-2"
+                data-piece="poon-white"
+              />
+            </div>
+            <div
+              data-row="7"
+              data-col="3"
+              class="white-cell"
+              data-piece="poon-white"
+            >
+              <img
+                src="poon-white.png"
+                alt=""
+                id="poon-white-3"
+                data-piece="poon-white"
+              />
+            </div>
+            <div
+              data-row="7"
+              data-col="4"
+              class="black-cell"
+              data-piece="poon-white"
+            >
+              <img
+                src="poon-white.png"
+                alt=""
+                id="poon-white-4"
+                data-piece="poon-white"
+              />
+            </div>
+            <div
+              data-row="7"
+              data-col="5"
+              class="white-cell"
+              data-piece="poon-white"
+            >
+              <img
+                src="poon-white.png"
+                alt=""
+                id="poon-white-5"
+                data-piece="poon-white"
+              />
+            </div>
+            <div
+              data-row="7"
+              data-col="6"
+              class="black-cell"
+              data-piece="poon-white"
+            >
+              <img
+                src="poon-white.png"
+                alt=""
+                id="poon-white-6"
+                data-piece="poon-white"
+              />
+            </div>
+            <div
+              data-row="7"
+              data-col="7"
+              class="white-cell"
+              data-piece="poon-white"
+            >
+              <img
+                src="poon-white.png"
+                alt=""
+                id="poon-white-7"
+                data-piece="poon-white"
+              />
+            </div>
+            <div
+              data-row="7"
+              data-col="8"
+              class="black-cell"
+              data-piece="poon-white"
+            >
+              <img
+                src="poon-white.png"
+                alt=""
+                id="poon-white-8"
+                data-piece="poon-white"
+              />
+            </div>
+
+            <div
+              data-row="8"
+              data-col="1"
+              class="black-cell"
+              data-piece="rook-white"
+            >
+              <img
+                src="rook-white.png"
+                alt=""
+                id="rook-white-1"
+                data-piece="rook-white"
+              />
+            </div>
+            <div
+              data-row="8"
+              data-col="2"
+              class="white-cell"
+              data-piece="knight-white"
+            >
+              <img
+                src="knight-white.png"
+                alt=""
+                id="knight-white-1"
+                data-piece="knight-white"
+              />
+            </div>
+            <div
+              data-row="8"
+              data-col="3"
+              class="black-cell"
+              data-piece="bishop-white"
+            >
+              <img
+                src="bishop-white.png"
+                alt=""
+                id="bishop-white-1"
+                data-piece="bishop-white"
+              />
+            </div>
+            <div
+              data-row="8"
+              data-col="4"
+              class="white-cell"
+              data-piece="queen-white"
+            >
+              <img
+                src="queen-white.png"
+                alt=""
+                id="queen-white"
+                data-piece="queen-white"
+              />
+            </div>
+            <div
+              data-row="8"
+              data-col="5"
+              class="black-cell"
+              data-piece="king-white"
+            >
+              <img
+                src="king-white.png"
+                alt=""
+                id="king-white"
+                data-piece="king-white"
+              />
+            </div>
+            <div
+              data-row="8"
+              data-col="6"
+              class="white-cell"
+              data-piece="bishop-white"
+            >
+              <img
+                src="bishop-white.png"
+                alt=""
+                id="bishop-white-2"
+                data-piece="bishop-white"
+              />
+            </div>
+            <div
+              data-row="8"
+              data-col="7"
+              class="black-cell"
+              data-piece="knight-white"
+            >
+              <img
+                src="knight-white.png"
+                alt=""
+                id="knight-white-2"
+                data-piece="knight-white"
+              />
+            </div>
+            <div
+              data-row="8"
+              data-col="8"
+              class="white-cell"
+              data-piece="rook-white"
+            >
+              <img
+                src="rook-white.png"
+                alt=""
+                id="rook-white-2"
+                data-piece="rook-white"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      //Player turn state; default is white
+      let playerTurn = "white";
+
+      //Selected piece object
+      let selectedPiece = {
+        pieceID: "",
+        piece: "",
+        row: "",
+        col: "",
+        player: "",
+        set: function (piece) {
+          this.pieceID = piece.id;
+          this.piece = piece.dataset.piece.split("-")[0];
+          this.player = piece.dataset.piece.split("-")[1];
+          this.row = piece.parentElement.dataset.row;
+          this.col = piece.parentElement.dataset.col;
+        },
+        reset: function () {
+          this.pieceID = "";
+          this.piece = "";
+          this.row = "";
+          this.col = "";
+          this.player = "";
+        },
+      };
+
+      //Event listener for piece click or drag
+      for (const piece of document.querySelectorAll("img")) {
+        piece.addEventListener("dragstart", (e) => {
+          e.dataTransfer.setData("text/plain", piece.id);
+          selectPiece(piece);
+        });
+
+        piece.addEventListener("click", (e) => {
+          if (e.target === e.currentTarget) {
+            selectPiece(piece);
+            // highlightMoves(
+            //   selectedPiece.piece,
+            //   parseInt(selectedPiece.row),
+            //   parseInt(selectedPiece.col)
+            // );
+          }
+        });
+      }
+      //Event listener for piece drop or click on droparea
+      for (const dropArea of document.querySelectorAll("#grid div")) {
+        dropArea.addEventListener("dragover", (e) => {
+          e.preventDefault();
+        });
+        dropArea.addEventListener("drop", (e) => {
+          e.preventDefault();
+          const droppedPiece = document.getElementById(
+            e.dataTransfer.getData("text/plain")
+          );
+          //   if (
+          //     canMove(
+          //       selectedPiece.piece,
+          //       parseInt(selectedPiece.row),
+          //       parseInt(selectedPiece.col),
+          //       parseInt(e.currentTarget.dataset.row),
+          //       parseInt(e.currentTarget.dataset.col)
+          //     )
+          //   ) {
+          //     droppedPiece.parentElement.classList.remove("selected");
+          //     dropArea.append(droppedPiece);
+          //     switchPlayerTurn();
+          //   } else {
+          //     droppedPiece.parentElement.classList.remove("selected");
+          //     selectedPiece.reset();
+          //   }
+        });
+        dropArea.addEventListener("click", (e) => {
+          if (e.target === e.currentTarget) {
+            // const droppedPiece = document.getElementById(selectedPiece.pieceID);
+            // if (
+            //     canMove(
+            //       selectedPiece.piece,
+            //       parseInt(selectedPiece.row),
+            //       parseInt(selectedPiece.col),
+            //       parseInt(e.currentTarget.dataset.row),
+            //       parseInt(e.currentTarget.dataset.col)
+            //     )
+            // ) {
+            //   droppedPiece.parentElement.classList.remove("selected");
+            //   dropArea.append(droppedPiece);
+            //   switchPlayerTurn();
+            // } else {
+            //   droppedPiece.parentElement.classList.remove("selected");
+            //   selectedPiece.reset();
+            // }
+          }
+        });
+      }
+
+      //Selects piece
+      function selectPiece(piece) {
+        selectedPiece.set(piece);
+        moves();
+        // if (playerTurn === selectedPiece.player) {
+        //     piece.parentElement.classList.add("selected");
+        // }
+      }
+
+      //Returns boolean whether a piece can move or not
+      //   function canMove(piece, rowFrom, colFrom, rowTo, colTo, player) {
+      //     if (selectedPiece.piece && playerTurn === selectedPiece.player) {
+      //       if (piece === "knight") {
+      //         if (rowTo == rowFrom - 1 && colTo == colFrom + 2) {
+      //           return true;
+      //         }
+      //         if (rowTo == rowFrom + 1 && colTo == colFrom + 2) {
+      //           return true;
+      //         }
+      //         if (rowTo == rowFrom - 2 && colTo == colFrom + 1) {
+      //           return true;
+      //         }
+      //         if (rowTo == rowFrom - 2 && colTo == colFrom - 1) {
+      //           return true;
+      //         }
+      //         if (rowTo == rowFrom - 1 && colTo == colFrom - 2) {
+      //           return true;
+      //         }
+      //         if (rowTo == rowFrom + 1 && colTo == colFrom - 2) {
+      //           return true;
+      //         }
+      //         if (rowTo == rowFrom + 2 && colTo == colFrom - 1) {
+      //           return true;
+      //         }
+      //         if (rowTo == rowFrom + 2 && colTo == colFrom + 1) {
+      //           return true;
+      //         }
+      //       }
+      //     }
+      //   }
+      function switchPlayerTurn() {
+        if (playerTurn === "white") {
+          playerTurn = "black";
+        } else {
+          playerTurn = "white";
+        }
+      }
+
+      //   function highlightMoves(piece, rowFrom, colFrom) {
+      //     for (const div of document.querySelectorAll("#grid div")) {
+      //       const row = div.dataset.row;
+      //       const col = div.dataset.col;
+      //       const coordinates = moves(piece, rowFrom, colFrom);
+      //       coordinates.forEach((coordinate) => {
+      //         if (row == coordinate.row && col == coordinate.col) {
+
+      //         }
+      //       });
+      //     }
+      //   }
+
+      //   function moves(piece, rowFrom, colFrom) {
+      //     if (piece === "knight") {
+      //       return [
+      //         { row: rowFrom - 2, col: colFrom - 1 },
+      //         { row: rowFrom - 2, col: colFrom + 1 },
+      //         { row: rowFrom - 1, col: colFrom + 2 },
+      //         { row: rowFrom + 1, col: colFrom + 2 },
+      //         { row: rowFrom + 2, col: colFrom + 1 },
+      //         { row: rowFrom + 2, col: colFrom - 1 },
+      //         { row: rowFrom - 1, col: colFrom - 2 },
+      //         { row: rowFrom + 1, col: colFrom - 2 },
+      //       ];
+      //     }
+      //   }
+      //Return doable coordinates
+      function moves() {
+        if (selectedPiece.piece === "poon") {
+          let moves = [];
+          const col = document.querySelectorAll(
+            `[data-col='${selectedPiece.col}']`
+          );
+          for (const div of col) {
+            div.dataset.row;
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
