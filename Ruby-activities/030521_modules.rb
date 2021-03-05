@@ -33,16 +33,26 @@ class Computer
     include ComputeDevice
 end
 
-# vivo = Phone.new
-# puts vivo.battery_level
-# vivo.battery_level = 10
-# puts vivo.battery_level
-# vivo.charge
-# puts vivo.battery_level
-# vivo.boot
+# android = Phone.new
+# puts android.battery_level
+# android.battery_level = 10
+# puts android.battery_level
+# android.charge
+# puts android.battery_level
+# android.check_cell_signal
+# android.boot
 
-# lenovo = Computer.new
-# vivo.boot
+# windows = Laptop.new
+# puts windows.battery_level
+# windows.battery_level = 10
+# puts windows.battery_level
+# windows.charge
+# puts windows.battery_level
+# windows.check_cell_signal
+# windows.boot
+
+# desktop = Computer.new
+# desktop.boot
 
 
 
