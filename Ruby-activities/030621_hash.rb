@@ -43,3 +43,5 @@ loop do
     continue = gets.chomp 
     return puts "Thank you!" if continue == "n"
 end
+
+# puts get_area_code(dial_book, "done")
