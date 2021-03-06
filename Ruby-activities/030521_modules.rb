@@ -7,7 +7,7 @@ end
 module PortableDevice
     include ComputeDevice
     def initialize
-        @battery_level = 0 
+        self.battery_level = 0 
     end
     def battery_level
         @battery_level
